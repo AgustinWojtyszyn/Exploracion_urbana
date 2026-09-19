@@ -1,40 +1,84 @@
-# TORRE 17
+# LEYENDA
 
-Juego de terror sobrenatural argentino en primera persona.
+Juego web de carrera futbolera y decisiones, diseñado **mobile-first**.
 
-Sos el encargado nocturno de una torre de departamentos del conurbano bonaerense. Durante el turno resolvés reclamos reales de consorcio —ascensores, agua, portero eléctrico, cortes, cámaras y puertas— hasta que el edificio empieza a mostrar pisos, pasillos y habitantes que no deberían existir.
+## Modos
 
-## Identidad
+- **Jugador**: 9, 10, 7, 5, 2 · Leñador y 1 · Arquero.
+- **Entrenador**: gestión de club, táctica, vestuario, juveniles, presupuesto y presión de directiva/hinchas.
+- **Desafío diario**: misma semilla para comparar carreras.
+- **Minijuegos**: penales, tiros libres, pases, reflejos, duelo defensivo y scouting.
+- **Ranking**: local sin configuración y global cuando se conecta Supabase.
 
-No es un shooter y no es survival crafting.
+## Identidad visual
 
-El terror nace de tareas cotidianas y reconocibles:
+- sistema visual azul;
+- tema oscuro y claro persistente;
+- Barlow Condensed para títulos;
+- Manrope para interfaz;
+- UI táctil y responsive desde 320 px;
+- navegación inferior en juego;
+- escudos geométricos **originales generados por LEYENDA**, no escudos oficiales.
 
-- revisar un ascensor que quedó clavado;
-- atender el portero eléctrico;
-- mirar cámaras;
-- subir por una pérdida de agua;
-- recibir un reclamo de un departamento vacío;
-- descubrir que el ascensor muestra 17 aunque el edificio tenga 16 pisos.
+## Datos de fútbol
 
-Estética argentina concreta: consorcio, portería, mármol, baldosas, matafuegos, tableros eléctricos, señalética en español, correspondencia, humedad, luces fluorescentes y ascensores antiguos.
+LEYENDA no usa nombres de jugadores reales ni marcas comerciales.
 
-## Stack
+Los nombres de clubes del catálogo se obtienen de datasets públicos de OpenFootball. Las ligas se muestran con nombres genéricos por país y división, por ejemplo:
 
-React + TypeScript + Vite + React Three Fiber + Drei + React Three Rapier + Zustand.
+- Liga Española · 1ª División
+- Liga Francesa · 2ª División
+- Liga Inglesa · 1ª División
 
-## Arranque
+No se incluyen nombres comerciales/patrocinados de ligas ni escudos oficiales.
 
-    npm install
-    npm run dev
+### Actualizar datos
 
-## Estado actual
+```bash
+npm run sync:data
+```
 
-Planta baja con portería, CCTV de la escena, materiales procedurales, iluminación por sectores y oclusión ambiental opcional. El primer reclamo conecta libro de novedades, prueba del ascensor B, indicador 17, plano, llamada y apertura parcial.
+El script `scripts/sync-football-data.mjs` descubre archivos de divisiones disponibles en `openfootball/football.json`, toma la versión más reciente verificable y genera `src/data/verifiedLeagues.ts`.
 
-Controles: **WASD** caminar, **mouse** mirar, **E** interactuar, **Esc** pausar, **M** silenciar, **Q** alternar oclusión ambiental. Teclado y mouse; el turno se reinicia al recargar.
+Nunca inventa pertenencia de un club a una división: si la fuente no lo verifica, no se incorpora automáticamente.
 
-    npm test
-    npm run build
+## Desarrollo
 
-Recorrido completo, arquitectura y límites: [notas de la iteración](docs/ITERATION_NOTES.md).
+```bash
+npm install
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+## Ranking global
+
+La app funciona sin backend usando ranking local.
+
+Para ranking global:
+
+1. crear/configurar un proyecto Supabase;
+2. ejecutar `supabase/migrations/20260919_leyenda_global_rankings.sql`;
+3. configurar:
+
+```env
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
+
+La app detecta automáticamente esas variables y cambia de ranking local a global.
+
+## Principios de contenido
+
+- sin jugadores reales;
+- sin marcas comerciales;
+- sin escudos oficiales;
+- clubes reales solamente cuando provienen de fuentes verificables;
+- ligas con nombres genéricos por país/división;
+- carreras finitas y puntuables;
+- decisiones con consecuencias;
+- mobile-first como prioridad de producto.
