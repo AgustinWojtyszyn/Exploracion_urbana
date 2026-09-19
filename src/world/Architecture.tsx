@@ -1,3 +1,4 @@
+import { verifiedLeagueSeeds } from '../data/verifiedLeagues'
 export type Position = '9' | '10' | '7' | '5' | '2' | '1'
 export type PlayerMode = 'classic' | 'daily'
 export type GameMode = 'player' | 'coach'
@@ -110,58 +111,39 @@ export type RunScore = {
 
 export type MiniGame = { id:MiniGameId; name:string; description:string; icon:string; playerOnly?:boolean; coachOnly?:boolean }
 
-export const leagues:League[] = [
-  {id:'arg-metropolitana',name:'Liga Metropolitana',country:'Argentina',tier:1,color:'#2f7cff'},
-  {id:'arg-nacional',name:'Nacional Interior',country:'Argentina',tier:2,color:'#58a5ff'},
-  {id:'bra-atlantica',name:'Liga Atlántica',country:'Brasil',tier:1,color:'#22a6b3'},
-  {id:'esp-iberica',name:'Liga Ibérica',country:'España',tier:1,color:'#5c6cff'},
-  {id:'eng-crown',name:'Crown League',country:'Inglaterra',tier:1,color:'#7a5cff'},
-  {id:'ita-aurora',name:'Serie Aurora',country:'Italia',tier:1,color:'#3277d5'},
-  {id:'fra-hexa',name:'Ligue Hexa',country:'Francia',tier:1,color:'#3b5dff'},
-  {id:'por-lusitana',name:'Liga Lusitana',country:'Portugal',tier:1,color:'#3e8eff'},
-]
+const slug=(value:string)=>value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')
+const initials=(name:string)=>name.split(/\s+/).filter(Boolean).slice(0,3).map(x=>x[0]).join('').toUpperCase()
+const seedColor=(name:string)=>{
+  let h=0
+  for(let i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))>>>0
+  const hue=205+(h%36)
+  return {primary:`hsl(${hue} 78% 48%)`,secondary:`hsl(${(hue+24)%360} 74% 68%)`}
+}
 
-export const clubs:Club[] = [
-  {id:'ombu',leagueId:'arg-nacional',name:'Club Social El Ombú',short:'OMB',country:'Argentina',prestige:42,salary:18000,minOverall:56,primary:'#2563eb',secondary:'#dbeafe'},
-  {id:'ferro-sur',leagueId:'arg-nacional',name:'Ferroviario del Sur',short:'FDS',country:'Argentina',prestige:47,salary:22000,minOverall:58,primary:'#174ea6',secondary:'#f8fafc'},
-  {id:'cordillera',leagueId:'arg-nacional',name:'Deportivo Cordillera',short:'DCO',country:'Argentina',prestige:51,salary:25000,minOverall:60,primary:'#0f67d8',secondary:'#8ec5ff'},
-  {id:'federal-norte',leagueId:'arg-nacional',name:'Federal del Norte',short:'FDN',country:'Argentina',prestige:54,salary:28000,minOverall:61,primary:'#1d4ed8',secondary:'#93c5fd'},
+export const leagues:League[] = verifiedLeagueSeeds.map(seed=>({
+  id:seed.id,
+  name:`Liga ${seed.country} · ${seed.division}ª División`,
+  country:seed.country,
+  tier:seed.division,
+  color:seedColor(seed.id).primary,
+}))
 
-  {id:'costanera',leagueId:'arg-metropolitana',name:'Atlético Costanera',short:'ACO',country:'Argentina',prestige:62,salary:40000,minOverall:65,primary:'#1e88e5',secondary:'#e3f2fd'},
-  {id:'cuyo',leagueId:'arg-metropolitana',name:'Unión de Cuyo',short:'UDC',country:'Argentina',prestige:66,salary:47000,minOverall:68,primary:'#2457c5',secondary:'#bfdbfe'},
-  {id:'oeste',leagueId:'arg-metropolitana',name:'Deportivo Oeste',short:'DOE',country:'Argentina',prestige:72,salary:62000,minOverall:72,primary:'#153e90',secondary:'#dbeafe'},
-  {id:'puerto',leagueId:'arg-metropolitana',name:'Puerto Central',short:'PCF',country:'Argentina',prestige:76,salary:72000,minOverall:74,primary:'#0067c5',secondary:'#90caf9'},
-
-  {id:'rio-azul',leagueId:'bra-atlantica',name:'Rio Azul Clube',short:'RAZ',country:'Brasil',prestige:74,salary:82000,minOverall:74,primary:'#168aad',secondary:'#d9f3ff'},
-  {id:'santa-mar',leagueId:'bra-atlantica',name:'Santa Mar FC',short:'SMF',country:'Brasil',prestige:78,salary:94000,minOverall:76,primary:'#2176ff',secondary:'#bde0fe'},
-  {id:'paulista-nova',leagueId:'bra-atlantica',name:'Paulista Nova',short:'PNV',country:'Brasil',prestige:82,salary:108000,minOverall:78,primary:'#2b59c3',secondary:'#edf2fb'},
-  {id:'mineiro-real',leagueId:'bra-atlantica',name:'Mineiro Real',short:'MIR',country:'Brasil',prestige:80,salary:101000,minOverall:77,primary:'#003f88',secondary:'#a9d6e5'},
-
-  {id:'andalucia',leagueId:'esp-iberica',name:'Andalucía CF',short:'ACF',country:'España',prestige:84,salary:155000,minOverall:79,primary:'#1e40af',secondary:'#eff6ff'},
-  {id:'capital-rojo',leagueId:'esp-iberica',name:'Capital 1902',short:'C02',country:'España',prestige:91,salary:255000,minOverall:85,primary:'#1d4ed8',secondary:'#ffffff'},
-  {id:'mediterraneo',leagueId:'esp-iberica',name:'Mediterráneo UD',short:'MED',country:'España',prestige:86,salary:186000,minOverall:81,primary:'#0a66c2',secondary:'#dbeafe'},
-  {id:'norte-vasco',leagueId:'esp-iberica',name:'Norte Vasco',short:'NVF',country:'España',prestige:82,salary:142000,minOverall:79,primary:'#0047ab',secondary:'#b9dcff'},
-
-  {id:'borough',leagueId:'eng-crown',name:'London Borough FC',short:'LBF',country:'Inglaterra',prestige:88,salary:205000,minOverall:82,primary:'#3949ab',secondary:'#c5cae9'},
-  {id:'northcastle',leagueId:'eng-crown',name:'Northcastle United',short:'NCU',country:'Inglaterra',prestige:83,salary:170000,minOverall:80,primary:'#1f4ba5',secondary:'#eff6ff'},
-  {id:'riverport',leagueId:'eng-crown',name:'Riverport City',short:'RPC',country:'Inglaterra',prestige:92,salary:280000,minOverall:86,primary:'#1565c0',secondary:'#bbdefb'},
-  {id:'mersey-athletic',leagueId:'eng-crown',name:'Mersey Athletic',short:'MAT',country:'Inglaterra',prestige:90,salary:250000,minOverall:84,primary:'#0d47a1',secondary:'#e3f2fd'},
-
-  {id:'milano',leagueId:'ita-aurora',name:'Milano Rosso',short:'MIL',country:'Italia',prestige:91,salary:245000,minOverall:84,primary:'#1e3a8a',secondary:'#dbeafe'},
-  {id:'torino-blu',leagueId:'ita-aurora',name:'Torino Blu',short:'TBL',country:'Italia',prestige:86,salary:180000,minOverall:81,primary:'#1d4ed8',secondary:'#bfdbfe'},
-  {id:'roma-impero',leagueId:'ita-aurora',name:'Roma Impero',short:'RIM',country:'Italia',prestige:85,salary:176000,minOverall:81,primary:'#2563eb',secondary:'#dbeafe'},
-  {id:'napoli-mare',leagueId:'ita-aurora',name:'Napoli Mare',short:'NPM',country:'Italia',prestige:88,salary:210000,minOverall:82,primary:'#0284c7',secondary:'#bae6fd'},
-
-  {id:'paris-etoile',leagueId:'fra-hexa',name:'Paris Étoile',short:'PET',country:'Francia',prestige:93,salary:305000,minOverall:86,primary:'#172554',secondary:'#dbeafe'},
-  {id:'lyon-union',leagueId:'fra-hexa',name:'Lyon Union',short:'LYU',country:'Francia',prestige:82,salary:155000,minOverall:79,primary:'#1d4ed8',secondary:'#eff6ff'},
-  {id:'marsella-port',leagueId:'fra-hexa',name:'Marsella Port',short:'MSP',country:'Francia',prestige:84,salary:168000,minOverall:80,primary:'#0369a1',secondary:'#bae6fd'},
-  {id:'monaco-royal',leagueId:'fra-hexa',name:'Monaco Royal',short:'MCR',country:'Francia',prestige:81,salary:149000,minOverall:79,primary:'#1e40af',secondary:'#dbeafe'},
-
-  {id:'lisboa',leagueId:'por-lusitana',name:'Lisboa 1908',short:'L08',country:'Portugal',prestige:81,salary:122000,minOverall:77,primary:'#1e3a8a',secondary:'#dbeafe'},
-  {id:'porto-norte',leagueId:'por-lusitana',name:'Porto Norte',short:'PON',country:'Portugal',prestige:83,salary:136000,minOverall:78,primary:'#2563eb',secondary:'#e0f2fe'},
-  {id:'braga-atlas',leagueId:'por-lusitana',name:'Braga Atlas',short:'BRA',country:'Portugal',prestige:76,salary:98000,minOverall:75,primary:'#1d4ed8',secondary:'#bfdbfe'},
-  {id:'setubal-ocean',leagueId:'por-lusitana',name:'Setúbal Ocean',short:'SEO',country:'Portugal',prestige:72,salary:82000,minOverall:73,primary:'#075985',secondary:'#bae6fd'},
-]
+export const clubs:Club[] = verifiedLeagueSeeds.flatMap(seed=>seed.teams.map((name,index)=>{
+  const colors=seedColor(name)
+  const basePrestige=Math.max(42,92-seed.division*8)
+  return {
+    id:`${seed.id}-${slug(name)}`,
+    leagueId:seed.id,
+    name,
+    short:initials(name).slice(0,3),
+    country:seed.country,
+    prestige:Math.max(40,Math.min(94,basePrestige-(index%9))),
+    salary:Math.round((18000+(basePrestige*1600))*(1-(seed.division-1)*.28)),
+    minOverall:Math.max(55,Math.min(88,56+Math.round(basePrestige*.32)-(seed.division-1)*4)),
+    primary:colors.primary,
+    secondary:colors.secondary,
+  }
+}))
 
 export const positions:Array<{id:Position;title:string;subtitle:string;boost:number}> = [
   {id:'9',title:'9 · DELANTERO',subtitle:'Goles, presencia y sangre fría.',boost:2},
