@@ -1,67 +1,54 @@
-# THE CITY BELOW — visión de producto
+# TORRE 17 — visión de producto
 
-## Fantasía principal
+## Fantasía
 
-Explorar una ciudad que parece reconocible pero guarda capas que nadie registra oficialmente.
+Sos el encargado nocturno de una torre de departamentos del conurbano bonaerense.
 
-No sos soldado, policía, detective ni superhéroe. Sos una persona obsesionada con entender cómo se conectan lugares que, en teoría, no deberían conectarse.
+La primera hora parece trabajo normal. Después el edificio empieza a contradecir sus propios planos.
 
-## Identidad argentina
+## Loop
 
-La referencia cultural es el conurbano bonaerense, reinterpretado de forma ficticia.
+RECIBIR RECLAMO → VERIFICAR → RECORRER → RESOLVER → NOTAR ALGO IMPOSIBLE → DECIDIR SI INVESTIGAR.
 
-Elementos visuales y sonoros:
-- estaciones ferroviarias y pasos bajo nivel;
-- galerías comerciales venidas abajo;
-- talleres, depósitos, paredones, medianeras y monoblocks;
-- cartelería municipal, mosaicos, azulejos y pintura descascarada;
-- cableados, transformadores, bombas, túneles pluviales y salas técnicas;
-- kioscos cerrados, persianas, clubes, garitas y pasillos;
-- humedad, lluvia de verano, viento, trenes lejanos, perros a distancia y electricidad;
-- arquitectura imposible debajo de infraestructura totalmente cotidiana.
+## Terror
 
-Evitar caricaturizar pobreza o inseguridad. La ambientación debe sentirse vivida, concreta y digna.
-
-## Loop principal
-
-OBSERVAR → REGISTRAR → CONECTAR → ACCEDER → CARTOGRAFIAR
-
-El progreso surge de entender el espacio.
+Sobrenatural y gradual. Nada de jumpscares cada treinta segundos.
 
 Ejemplos:
-- descubrir que dos ruidos pertenecen a la misma ventilación;
-- fotografiar una numeración repetida en lugares distintos;
-- encontrar una llave física sin saber todavía qué abre;
-- seguir cableado o cañerías;
-- detectar un recorrido ferroviario imposible;
-- reconstruir un plano incompleto;
-- visitar un mismo lugar a otra hora y encontrar una entrada nueva.
 
-## Regla de oro
+- un llamado desde un departamento desocupado;
+- una cámara que muestra un pasillo inexistente;
+- un ascensor que abre en un piso 17 que no figura;
+- vecinos que recuerdan personas que nunca vivieron ahí;
+- una puerta de escalera que conecta con otro piso;
+- el mismo pasillo con pequeñas diferencias cada vez.
 
-No convertirlo en shooter.
+## Argentina
 
-La tensión debe venir de:
-- estar en un lugar donde no sabés si deberías estar;
-- perder orientación;
-- puertas que antes estaban abiertas;
-- sonidos sin explicación;
-- cambios de horario;
-- infraestructura activa;
-- personas o presencias ambiguas;
-- consecuencias de explorar demasiado.
+Debe sentirse argentino antes de que aparezca cualquier elemento sobrenatural.
 
-## Vertical slice objetivo
+Portería, libro de novedades, consorcio, administrador, portero eléctrico, matafuegos, ascensores viejos, tablero de medidores, carteles pegados, expensas, baldosas graníticas, mármol, humedad, cables, ventiluz, terraza, tanque de agua y patios internos.
 
-Una estación ficticia del conurbano al final del servicio nocturno.
+Evitar parodia. Evitar convertir Argentina en una colección de memes.
 
-Capas:
-1. andén público;
-2. pasillo de mantenimiento;
-3. galería comercial cerrada;
-4. túnel pluvial;
-5. primera evidencia de una estación inferior no registrada.
+## Primer vertical slice
 
-Duración ideal del slice: 15–25 minutos.
+Noche 1:
 
-El jugador debe terminar queriendo saber qué hay más abajo.
+1. empezar turno en portería;
+2. recibir reclamo por ascensor detenido;
+3. revisar cámaras;
+4. ir al hall de ascensores;
+5. comprobar que el ascensor funciona;
+6. notar que el indicador ofrece piso 17;
+7. recibir una llamada desde 17° B;
+8. comprobar en la planilla que el edificio termina en 16;
+9. finalizar con el ascensor abriendo lentamente en un lugar que no corresponde.
+
+Duración objetivo: 15–25 minutos.
+
+## Regla visual
+
+Un edificio pequeño puede sentirse enorme si cada sector tiene identidad, profundidad, sonido y puertas que sugieren espacios más allá.
+
+No construir 16 pisos completos al principio.
