@@ -1,6 +1,8 @@
 name: World League Data Sync
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [world-data-sync]
 
@@ -14,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: world-data-sync
       - name: Node
         uses: actions/setup-node@v4
         with:
@@ -24,9 +24,10 @@ jobs:
         run: node scripts/sync-world-leagues.mjs
       - name: Install
         run: npm install
-      - name: Build
+      - name: Build generated catalog
         run: npm run build
-      - name: Commit generated catalog
+      - name: Commit generated catalog on sync branch
+        if: github.event_name == 'push'
         run: |
           git config user.name "leyenda-data-bot"
           git config user.email "actions@users.noreply.github.com"
