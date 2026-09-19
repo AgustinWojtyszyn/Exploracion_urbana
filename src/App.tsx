@@ -33,6 +33,7 @@ import {
   trainCareer,
   transferTo,
 } from './systems/buildingStore'
+import { globalRankingEnabled, loadLeaderboard, submitLeaderboardScore } from './systems/rankingService'
 
 type SaveState = CareerState | CoachState | null
 
@@ -244,7 +245,7 @@ function BottomNav({tab,setTab,coach}:{tab:Tab;setTab:(t:Tab)=>void;coach:boolea
 
 function RankingPanel({scores}:{scores:RunScore[]}){
   return <section className="panel ranking-panel">
-    <div className="panel-head"><div><span className="eyebrow">HALL DE LA FAMA</span><h2>Mejores carreras</h2></div><span className="pill">TOP {Math.min(20,scores.length)}</span></div>
+    <div className="panel-head"><div><span className="eyebrow">HALL DE LA FAMA</span><h2>Mejores carreras</h2></div><span className="pill">{globalRankingEnabled?'GLOBAL':'LOCAL'} · TOP {Math.min(20,scores.length)}</span></div>
     {scores.length===0?<div className="empty-state"><b>⌁</b><strong>Todavía no hay carreras terminadas.</strong><span>Tu primera run completa inaugura el ranking.</span></div>:
       <div className="ranking-list">{scores.slice(0,20).map((s,i)=><div key={s.id}><b>{String(i+1).padStart(2,'0')}</b><div><strong>{s.name}</strong><span>{s.detail}</span></div><em>{s.score.toLocaleString('es-AR')}</em></div>)}</div>}
   </section>
@@ -304,12 +305,18 @@ function PlayerGame({state,setState,theme,onTheme,onExit}:{state:CareerState;set
   const [tab,setTab]=useState<Tab>('career')
   const [scores,setScores]=useState<RunScore[]>(()=>getRunScores())
   const club=clubById(state.clubId)
+
+  useEffect(()=>{
+    loadLeaderboard().then(setScores)
+  },[])
   const league=leagueById(club.leagueId)
 
   useEffect(()=>{
     if(state.retired&&state.finalScore&&!scores.some(s=>s.id==='player-'+state.seed)){
-      const next=saveRunScore({id:'player-'+state.seed,name:state.playerName,mode:'player',score:state.finalScore,detail:`${state.position} · ${state.history.length} temporadas · ${state.titles} títulos`,createdAt:Date.now()})
+      const run={id:'player-'+state.seed,name:state.playerName,mode:'player' as const,score:state.finalScore,detail:`${state.position} · ${state.history.length} temporadas · ${state.titles} títulos`,createdAt:Date.now()}
+      const next=saveRunScore(run)
       setScores(next)
+      void submitLeaderboardScore(run).then(()=>loadLeaderboard()).then(setScores)
     }
   },[state.retired,state.finalScore])
 
@@ -385,8 +392,14 @@ function CoachGame({state,setState,theme,onTheme,onExit}:{state:CoachState;setSt
   const club=clubById(state.clubId)
 
   useEffect(()=>{
+    loadLeaderboard().then(setScores)
+  },[])
+
+  useEffect(()=>{
     if(state.retired&&state.finalScore&&!scores.some(s=>s.id==='coach-'+state.coachName+'-'+state.clubId)){
-      setScores(saveRunScore({id:'coach-'+state.coachName+'-'+state.clubId,name:state.coachName,mode:'coach',score:state.finalScore,detail:`DT · ${club.name} · ${state.titles} títulos`,createdAt:Date.now()}))
+      const run={id:'coach-'+state.coachName+'-'+state.clubId,name:state.coachName,mode:'coach' as const,score:state.finalScore,detail:`DT · ${club.name} · ${state.titles} títulos`,createdAt:Date.now()}
+      setScores(saveRunScore(run))
+      void submitLeaderboardScore(run).then(()=>loadLeaderboard()).then(setScores)
     }
   },[state.retired,state.finalScore])
 
