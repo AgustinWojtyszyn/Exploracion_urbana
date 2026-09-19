@@ -1,44 +1,47 @@
-# Astra — punto de entrada
+# Astra — TORRE 17
 
 Antes de tocar código leer:
+
 1. README.md
 2. docs/GAME_VISION.md
-3. src/data/zones.ts
-4. src/systems/explorationStore.ts
+3. src/world/Tower17World.tsx
+4. src/systems/buildingStore.ts
+5. src/interactions/InteractionSystem.tsx
 
-## Lo que ya está decidido
+## Ya decidido
 
-- Stack: React + TypeScript + Vite.
-- Render 3D: React Three Fiber.
-- Helpers: Drei.
-- Física: React Three Rapier.
-- Estado global: Zustand.
-- Primera persona, pero NO shooter.
-- Progresión basada en exploración y cartografía.
-- Inspiración visual: conurbano argentino ficticio.
-- El primer vertical slice ocurre alrededor de una estación nocturna ficticia.
+- React + TypeScript + Vite.
+- React Three Fiber + Drei.
+- React Three Rapier.
+- Zustand.
+- Primera persona.
+- Terror sobrenatural argentino.
+- El jugador es encargado nocturno.
+- NO shooter.
+- NO survival crafting.
+- NO mundo abierto.
+- El edificio tiene 16 pisos oficialmente. El 17 no debería existir.
 
-## Lo que NO hay que hacer
+## Prioridad inmediata
 
-- No reemplazar el stack.
-- No introducir backend todavía.
-- No agregar armas.
-- No convertirlo en survival crafting.
-- No generar un mundo abierto enorme.
-- No meter veinte sistemas antes de que exista un slice jugable.
-- No romper la división world/player/systems/data/ui.
-- No copiar assets o código con licencia incompatible.
+Subir calidad de planta baja y completar el primer incidente.
 
-## Primera meta técnica
+Orden:
 
-Crear un slice jugable pequeño:
-- movimiento FPS sólido;
-- colisiones;
-- interacción contextual;
-- 3 hallazgos registrables;
-- mapa diegético simple;
-- una puerta/acceso que se desbloquee al conectar pistas;
-- ambiente nocturno convincente;
-- una transición hacia un nivel inferior.
+1. calidad visual;
+2. movimiento;
+3. audio;
+4. portería/cámaras;
+5. ascensor;
+6. evento sobrenatural;
+7. expansión del edificio.
 
-Mantener todos los sistemas desacoplados y reemplazables.
+No construir pisos repetidos por cantidad.
+
+## Dirección visual
+
+Realismo sucio pero cuidado. Conurbano/AMBA reconocible sin caricatura.
+
+Mármol económico, baldosas graníticas, revoque, acero inoxidable viejo, fluorescentes, humedad, cartelería de consorcio, portero eléctrico, matafuegos, correspondencia, medidores y ascensores antiguos.
+
+Evitar estética cyberpunk, americana, industrial genérica o backrooms clon.
