@@ -22,6 +22,14 @@ export const zones: Zone[] = [
     landmark: 'Ascensor de carga sin botonera.',
   },
   {
+    id: 'mantenimiento', name: 'Pasillo de mantenimiento', layer: 'service',
+    mood: 'Cañerías que vibran detrás del revoque.', landmark: 'Una franja verde continúa hacia el oeste.',
+  },
+  {
+    id: 'sector-tecnico', name: 'Sector técnico', layer: 'service',
+    mood: 'Un circuito sigue trabajando después del último tren.', landmark: 'Tablero de alimentación inferior.',
+  },
+  {
     id: 'nodo-14',
     name: 'Nodo 14',
     layer: 'below',

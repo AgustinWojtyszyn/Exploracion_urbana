@@ -1,37 +1,31 @@
 import { Canvas } from '@react-three/fiber'
-import { KeyboardControls } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
 import { Suspense } from 'react'
 import { PrototypeWorld } from '../world/PrototypeWorld'
 import { ExplorerRig } from '../player/ExplorerRig'
-
-const controls = [
-  { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
-  { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
-  { name: 'left', keys: ['ArrowLeft', 'KeyA'] },
-  { name: 'right', keys: ['ArrowRight', 'KeyD'] },
-  { name: 'interact', keys: ['KeyE'] },
-  { name: 'map', keys: ['KeyM', 'Tab'] },
-]
+import { InteractionSystem } from '../interactions/InteractionSystem'
+import { ZoneAudio } from '../audio/ZoneAudio'
 
 export function GameCanvas() {
   return (
-    <KeyboardControls map={controls}>
+    <>
       <Canvas
-        shadows
-        camera={{ position: [0, 2.4, 6], fov: 52, near: 0.05, far: 350 }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 1, 18], fov: 65, near: 0.05, far: 350 }}
         gl={{ antialias: true }}
       >
         <color attach="background" args={['#0b0d0f']} />
-        <fog attach="fog" args={['#0b0d0f', 18, 75]} />
+        <fog attach="fog" args={['#0b0d0f', 28, 125]} />
 
         <Suspense fallback={null}>
           <Physics gravity={[0, -18, 0]}>
             <PrototypeWorld />
             <ExplorerRig />
+            <InteractionSystem />
           </Physics>
         </Suspense>
       </Canvas>
-    </KeyboardControls>
+      <ZoneAudio />
+    </>
   )
 }
