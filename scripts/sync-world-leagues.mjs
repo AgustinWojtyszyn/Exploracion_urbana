@@ -16,16 +16,26 @@ const wd=(id)=>'wd:'+id
 async function sparql(query,retries=5){
   const url=ENDPOINT+'?format=json&query='+encodeURIComponent(query)
   for(let attempt=1;attempt<=retries;attempt++){
-    const res=await fetch(url,{
-      headers:{
-        Accept:'application/sparql-results+json',
-        'User-Agent':'LeyendaFootballGame/2.0 (https://github.com/AgustinWojtyszyn/Leyenda)'
-      }
-    })
-    if(res.ok)return res.json()
-    const body=await res.text()
-    if(attempt===retries)throw new Error('Wikidata '+res.status+' '+body.slice(0,400))
-    console.warn('Wikidata retry',attempt,res.status)
+    const controller=new AbortController()
+    const timeout=setTimeout(()=>controller.abort(),45000)
+    try{
+      const res=await fetch(url,{
+        signal:controller.signal,
+        headers:{
+          Accept:'application/sparql-results+json',
+          'User-Agent':'LeyendaFootballGame/2.0 (https://github.com/AgustinWojtyszyn/Leyenda)'
+        }
+      })
+      clearTimeout(timeout)
+      if(res.ok)return res.json()
+      const body=await res.text()
+      if(attempt===retries)throw new Error('Wikidata '+res.status+' '+body.slice(0,400))
+      console.warn('Wikidata retry',attempt,res.status)
+    }catch(error){
+      clearTimeout(timeout)
+      if(attempt===retries)throw error
+      console.warn('Wikidata retry',attempt,String(error).slice(0,160))
+    }
     await sleep(1200*attempt)
   }
 }
@@ -55,6 +65,8 @@ SELECT DISTINCT ?league ?country ?countryLabel ?level WHERE {
           wdt:P17 ?country ;
           wdt:P3983 ?level .
   FILTER(?level >= 1 && ?level <= 3)
+  FILTER NOT EXISTS { ?league wdt:P2094 wd:Q606060 }
+  FILTER NOT EXISTS { ?league wdt:P31/wdt:P279* wd:Q135641755 }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en". }
 }`
   const directData=await sparql(direct)
@@ -84,6 +96,8 @@ SELECT DISTINCT ?league ?country ?countryLabel ?level WHERE {
     BIND(?third AS ?league)
     BIND(3 AS ?level)
   }
+  FILTER NOT EXISTS { ?league wdt:P2094 wd:Q606060 }
+  FILTER NOT EXISTS { ?league wdt:P31/wdt:P279* wd:Q135641755 }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en". }
 }`
   const hierarchyData=await sparql(hierarchy)
