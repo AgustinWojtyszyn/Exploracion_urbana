@@ -1,75 +1,164 @@
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
-import { useEffect, useMemo } from 'react'
-import { CuboidCollider, RigidBody } from '@react-three/rapier'
-import { BoxGeometry, CanvasTexture, SRGBColorSpace } from 'three'
+export type Position = '9' | '10' | '7' | '5' | '2' | '1'
+export type Mode = 'classic' | 'daily'
+export type Tab = 'career' | 'market' | 'training' | 'history'
 
-export type Vec3 = [number, number, number]
-import { palette, type MaterialName } from '../environment/materials'
-export { palette } from '../environment/materials'
-const geometries = new Map<string, BoxGeometry>()
-function box(size: Vec3) {
-  const key = size.join(',')
-  let geometry = geometries.get(key)
-  if (!geometry) {
-    const bevel = Math.min(...size) > .04 && Math.max(...size) < 3.5
-    geometry = bevel ? new RoundedBoxGeometry(...size, 2, Math.min(.014, Math.min(...size) * .16)) : new BoxGeometry(...size)
-    const uv = geometry.attributes.uv, p = geometry.attributes.position, n = geometry.attributes.normal
-    for (let i = 0; i < uv.count; i++) {
-      const nx = Math.abs(n.getX(i)), ny = Math.abs(n.getY(i)), nz = Math.abs(n.getZ(i))
-      if (nx > ny && nx > nz) uv.setXY(i, p.getZ(i), p.getY(i))
-      else if (ny > nz) uv.setXY(i, p.getX(i), p.getZ(i))
-      else uv.setXY(i, p.getX(i), p.getY(i))
-    }
-    geometries.set(key, geometry)
-  }
-  return geometry
+export type Club = {
+  id: string
+  name: string
+  short: string
+  country: string
+  prestige: number
+  salary: number
+  minOverall: number
+  primary: string
+  secondary: string
 }
 
-export function Block({ position, size, material = 'concrete', rotation = [0, 0, 0], solid = true }: {
-  position: Vec3; size: Vec3; material?: MaterialName; rotation?: Vec3; solid?: boolean
-}) {
-  const mesh = <mesh geometry={box(size)} material={palette[material]} receiveShadow castShadow={Math.min(...size) > .035} dispose={null} />
-  return solid ? <RigidBody type="fixed" colliders={false} position={position} rotation={rotation}>
-    <CuboidCollider args={[size[0] / 2, size[1] / 2, size[2] / 2]} />{mesh}
-  </RigidBody> : <group position={position} rotation={rotation}>{mesh}</group>
+export type SeasonRecord = {
+  season: number
+  age: number
+  clubId: string
+  matches: number
+  goals: number
+  assists: number
+  titles: number
+  rating: number
+  note: string
 }
 
-export function Sign({ position, lines, width = 2.4, height = 0.8, rotation = [0, 0, 0], paper = false }: {
-  position: Vec3; lines: string[]; width?: number; height?: number; rotation?: Vec3; paper?: boolean
-}) {
-  const text = lines.join('\n')
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 512
-    canvas.height = Math.max(64, Math.min(512, Math.round(512 * height / width)))
-    const ctx = canvas.getContext('2d')!
-    ctx.fillStyle = paper ? '#d1c7ad' : '#18201f'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.strokeStyle = paper ? '#756b57' : '#a99a7b'
-    ctx.lineWidth = 4
-    ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24)
-    ctx.fillStyle = paper ? '#2d302d' : '#e8e0cb'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    const rows = text.split('\n')
-    const spacing = canvas.height / (rows.length + 1)
-    const longest = Math.max(...rows.map(line => line.length), 1)
-    const fontSize = Math.min(rows.length === 1 ? canvas.height * .68 : spacing * .65, 470 / (longest * .61))
-    ctx.font = `600 ${fontSize}px monospace`
-    rows.forEach((line, i) => ctx.fillText(line, 256, spacing * (i + 1), 480))
-    ctx.fillStyle = 'rgba(20,18,12,.08)'
-    for (let i = 0; i < 34; i++) ctx.fillRect((i * 139) % 1024, (i * 53) % canvas.height, 20 + i % 31, 2)
-    const texture = new CanvasTexture(canvas)
-    texture.colorSpace = SRGBColorSpace
-    return texture
-  }, [text, width, height, paper])
-  useEffect(() => () => texture.dispose(), [texture])
-  return <mesh position={position} rotation={rotation}>
-    <planeGeometry args={[width, height]} />
-    <meshStandardMaterial map={texture} roughness={0.8} emissive="#ffffff" emissiveIntensity={0.08} emissiveMap={texture} />
-  </mesh>
+export type Effects = Partial<Record<'overall' | 'form' | 'energy' | 'reputation' | 'fans' | 'coachTrust' | 'money', number>>
+
+export type EventOption = {
+  id: string
+  label: string
+  description: string
+  effects: Effects
 }
 
-export function Tube({ position, rotation = [0, 0, 0] }: { position: Vec3; rotation?: Vec3 }) {
-  return <Block position={position} rotation={rotation} size={[2.15, 0.055, 0.11]} material="light" solid={false} />
+export type CareerEvent = {
+  id: string
+  eyebrow: string
+  title: string
+  body: string
+  options: EventOption[]
+}
+
+export type CareerState = {
+  version: 1
+  mode: Mode
+  seed: number
+  playerName: string
+  position: Position
+  age: number
+  season: number
+  clubId: string
+  overall: number
+  form: number
+  energy: number
+  reputation: number
+  fans: number
+  coachTrust: number
+  money: number
+  matches: number
+  goals: number
+  assists: number
+  titles: number
+  caps: number
+  nationalGoals: number
+  trainingCredits: number
+  history: SeasonRecord[]
+  achievements: string[]
+  offers: string[]
+  activeEvent: CareerEvent | null
+  retired: boolean
+}
+
+export const clubs: Club[] = [
+  { id: 'ombu', name: 'Club Social El Ombú', short: 'CEO', country: 'Argentina', prestige: 42, salary: 18000, minOverall: 56, primary: '#087847', secondary: '#efe7c7' },
+  { id: 'ferro-sur', name: 'Ferroviario del Sur', short: 'FDS', country: 'Argentina', prestige: 47, salary: 22000, minOverall: 58, primary: '#e7ad26', secondary: '#151515' },
+  { id: 'costanera', name: 'Atlético Costanera', short: 'ACO', country: 'Argentina', prestige: 59, salary: 36000, minOverall: 64, primary: '#55a9df', secondary: '#f5f5f5' },
+  { id: 'cuyo', name: 'Unión de Cuyo', short: 'UDC', country: 'Argentina', prestige: 64, salary: 44000, minOverall: 68, primary: '#7b1833', secondary: '#ead6ad' },
+  { id: 'oeste', name: 'Deportivo Oeste', short: 'DOE', country: 'Argentina', prestige: 71, salary: 60000, minOverall: 72, primary: '#1f3d8f', secondary: '#f4d35e' },
+  { id: 'lisboa', name: 'Lisboa 1908', short: 'L08', country: 'Portugal', prestige: 79, salary: 115000, minOverall: 76, primary: '#cc1735', secondary: '#f4f4f4' },
+  { id: 'andalucia', name: 'Andalucía CF', short: 'ACF', country: 'España', prestige: 84, salary: 155000, minOverall: 79, primary: '#efefef', secondary: '#b6122c' },
+  { id: 'borough', name: 'London Borough FC', short: 'LBF', country: 'Inglaterra', prestige: 88, salary: 205000, minOverall: 82, primary: '#512d6d', secondary: '#76c7c0' },
+  { id: 'milano', name: 'Milano Rosso', short: 'MIL', country: 'Italia', prestige: 91, salary: 245000, minOverall: 84, primary: '#b10f2e', secondary: '#111111' },
+  { id: 'amsterdam', name: 'Amsterdam Noord', short: 'ASN', country: 'Países Bajos', prestige: 86, salary: 178000, minOverall: 80, primary: '#eeeeee', secondary: '#d71920' },
+]
+
+export const positions: Array<{ id: Position; title: string; subtitle: string; boost: number }> = [
+  { id: '9', title: '9 · DELANTERO', subtitle: 'Goles, presencia y sangre fría.', boost: 2 },
+  { id: '10', title: '10 · ENGANCHE', subtitle: 'Visión, técnica y asistencias.', boost: 1 },
+  { id: '7', title: '7 · EXTREMO', subtitle: 'Desequilibrio, velocidad y uno contra uno.', boost: 1 },
+  { id: '5', title: '5 · VOLANTE', subtitle: 'Equilibrio, pase y lectura.', boost: 0 },
+  { id: '2', title: '2 · CENTRAL', subtitle: 'Jerarquía, marca y liderazgo.', boost: 0 },
+  { id: '1', title: '1 · ARQUERO', subtitle: 'Reflejos, personalidad y penales.', boost: 0 },
+]
+
+export const events: CareerEvent[] = [
+  {
+    id: 'agent',
+    eyebrow: 'FUERA DE LA CANCHA',
+    title: 'Te llama un representante',
+    body: 'Promete mover tu nombre, pero quiere una comisión alta y control sobre tus próximos contratos.',
+    options: [
+      { id: 'sign', label: 'Firmar con él', description: 'Más exposición, menos plata.', effects: { reputation: 8, money: -12000, fans: 2 } },
+      { id: 'alone', label: 'Seguir solo', description: 'Cuidás la plata y te ganás el vestuario.', effects: { money: 5000, coachTrust: 5 } },
+      { id: 'family', label: 'Que te maneje alguien cercano', description: 'Menos ruido, más estabilidad.', effects: { energy: 6, form: 3, reputation: -2 } },
+    ],
+  },
+  {
+    id: 'classic',
+    eyebrow: 'SEMANA DE CLÁSICO',
+    title: 'El técnico duda entre vos y un referente',
+    body: 'La cancha va a estar hirviendo. Podés pedir la titularidad o aceptar entrar desde el banco.',
+    options: [
+      { id: 'demand', label: 'Quiero jugar', description: 'Subís presión y exposición.', effects: { form: 5, coachTrust: -4, reputation: 5 } },
+      { id: 'bench', label: 'Aceptar el banco', description: 'Ganás confianza del DT.', effects: { coachTrust: 8, energy: 5 } },
+      { id: 'train', label: 'Hablar en la cancha', description: 'Doble turno antes del clásico.', effects: { overall: 1, energy: -10, form: 4 } },
+    ],
+  },
+  {
+    id: 'night',
+    eyebrow: 'VIDA PERSONAL',
+    title: 'Te invitan a una fiesta dos días antes del partido',
+    body: 'Va todo el plantel. También hay periodistas y teléfonos por todos lados.',
+    options: [
+      { id: 'go', label: 'Ir igual', description: 'La pasás bien, pero tiene costo.', effects: { energy: -12, fans: 5, coachTrust: -7 } },
+      { id: 'home', label: 'Quedarte en casa', description: 'Profesionalismo puro.', effects: { energy: 8, coachTrust: 6, fans: -1 } },
+      { id: 'appear', label: 'Caer una hora y volver', description: 'Equilibrio.', effects: { fans: 2, energy: -3, coachTrust: 2 } },
+    ],
+  },
+  {
+    id: 'number',
+    eyebrow: 'VESTUARIO',
+    title: 'Te ofrecen una camiseta histórica',
+    body: 'El número pesa. La gente espera que rindas desde el primer partido.',
+    options: [
+      { id: 'take', label: 'Ponértela', description: 'Más presión, más idolatría.', effects: { fans: 9, reputation: 5, form: -2 } },
+      { id: 'wait', label: 'Todavía no', description: 'Perfil bajo y foco.', effects: { coachTrust: 4, energy: 4 } },
+    ],
+  },
+  {
+    id: 'injury',
+    eyebrow: 'PARTE MÉDICO',
+    title: 'Sentís una molestia muscular',
+    body: 'No parece grave, pero hay un partido importante el fin de semana.',
+    options: [
+      { id: 'play', label: 'Jugar infiltrado', description: 'Riesgo alto, premio alto.', effects: { energy: -18, reputation: 7, form: -3 } },
+      { id: 'rest', label: 'Parar una fecha', description: 'Cuidás el físico.', effects: { energy: 15, coachTrust: 2 } },
+      { id: 'therapy', label: 'Pagar tratamiento privado', description: 'Recuperación más rápida.', effects: { money: -9000, energy: 10, form: 3 } },
+    ],
+  },
+]
+
+export function clubById(id: string) {
+  return clubs.find((club) => club.id === id) ?? clubs[0]
+}
+
+export function formatMoney(value: number) {
+  return new Intl.NumberFormat('es-AR', {
+    notation: value >= 1000000 ? 'compact' : 'standard',
+    maximumFractionDigits: 1,
+  }).format(value)
 }
