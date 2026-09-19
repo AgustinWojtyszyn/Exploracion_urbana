@@ -6,6 +6,7 @@ type SessionState = {
   ready: boolean
   started: boolean
   muted: boolean
+  enhanced: boolean
   prompt: string
   notice: string
   setLocked: (locked: boolean) => void
@@ -15,7 +16,7 @@ type SessionState = {
 }
 
 export const useSessionStore = create<SessionState>((set) => ({
-  locked: false, journalOpen: false, ready: false, started: false, muted: false,
+  locked: false, journalOpen: false, ready: false, started: false, muted: false, enhanced: true,
   prompt: '', notice: '',
   setLocked: (locked) => set((s) => ({ locked, started: s.started || locked, prompt: '' })),
   setReady: () => set({ ready: true }),

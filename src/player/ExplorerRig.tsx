@@ -1,3 +1,4 @@
+import { listenerPose, requestSound } from '../audio/soundscape'
 import { useEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { PointerLockControls } from '@react-three/drei'
@@ -6,7 +7,7 @@ import { Vector3 } from 'three'
 import { useSessionStore } from '../systems/sessionStore'
 import { useBuildingStore } from '../systems/buildingStore'
 
-const spawn = { x: 0, y: 0.32, z: 13 }
+const spawn = { x: 0, y: 0.9, z: 8.7 }
 
 export function ExplorerRig() {
   const body = useRef<RapierRigidBody>(null)
@@ -18,7 +19,11 @@ export function ExplorerRig() {
   const right = useRef(new Vector3())
   const desired = useRef(new Vector3())
   const vertical = useRef(0)
+  const gait = useRef(0)
+  const bob = useRef(0)
+  const step = useRef(0)
   const controller = useRef<ReturnType<typeof world.createCharacterController> | null>(null)
+  const cctvOpen = useBuildingStore(s => s.cctvOpen)
   const setLocked = useSessionStore(s => s.setLocked)
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export function ExplorerRig() {
     const b = body.current, c = controller.current
     if (!b || !c) return
     const dt = Math.min(world.timestep, 1 / 30)
-    const active = useSessionStore.getState().locked
+    const active = useSessionStore.getState().locked && !useBuildingStore.getState().cctvOpen
     const k = keys.current
     camera.getWorldDirection(forward.current)
     forward.current.y = 0
@@ -62,18 +67,28 @@ export function ExplorerRig() {
     const z = active ? Number(k.has('KeyW') || k.has('ArrowUp')) - Number(k.has('KeyS') || k.has('ArrowDown')) : 0
     const x = active ? Number(k.has('KeyD') || k.has('ArrowRight')) - Number(k.has('KeyA') || k.has('ArrowLeft')) : 0
     desired.current.copy(forward.current).multiplyScalar(z).addScaledVector(right.current, x).normalize().multiplyScalar(2.25)
-    velocity.current.lerp(desired.current, 1 - Math.exp(-11 * dt))
+    velocity.current.lerp(desired.current, 1 - Math.exp(-(x || z ? 9 : 18) * dt))
     vertical.current = c.computedGrounded() ? -0.4 : Math.max(-14, vertical.current - 18 * dt)
     c.computeColliderMovement(b.collider(0), { x: velocity.current.x * dt, y: vertical.current * dt, z: velocity.current.z * dt })
     const m = c.computedMovement(), p = b.translation()
     b.setNextKinematicTranslation({ x: p.x + m.x, y: p.y + m.y, z: p.z + m.z })
   })
 
-  useFrame(() => {
+  useFrame((_, dt) => {
     if (!body.current) return
     const p = body.current.translation()
-    camera.position.set(p.x, p.y + 0.7, p.z)
-    const zone = p.z < -8 ? 'ascensores' : p.x < -5 ? 'porteria' : p.x > 5 ? 'servicios' : 'lobby'
+    const speed = velocity.current.length()
+    gait.current += Math.min(dt, .05) * speed * 3.5
+    const stepIndex = Math.floor(gait.current / Math.PI)
+    if (stepIndex !== step.current && speed > .3 && controller.current?.computedGrounded()) requestSound('step')
+    step.current = stepIndex
+    const targetBob = controller.current?.computedGrounded() ? Math.sin(gait.current * 2) * .012 * Math.min(speed / 2.25, 1) : 0
+    bob.current += (targetBob - bob.current) * (1 - Math.exp(-12 * dt))
+    camera.position.set(p.x, p.y + 0.76 + bob.current, p.z)
+    listenerPose.position[0] = camera.position.x; listenerPose.position[1] = camera.position.y; listenerPose.position[2] = camera.position.z
+    camera.getWorldDirection(forward.current)
+    listenerPose.forward[0] = forward.current.x; listenerPose.forward[1] = forward.current.y; listenerPose.forward[2] = forward.current.z
+    const zone = p.z < -5 && p.x < 3.5 ? 'ascensores' : p.x < -2 && p.z > 1 ? 'porteria' : p.x > 3.5 && p.z < -3 ? 'servicios' : 'lobby'
     if (useBuildingStore.getState().currentZone !== zone) useBuildingStore.getState().setZone(zone)
   })
 
@@ -81,6 +96,6 @@ export function ExplorerRig() {
     <RigidBody ref={body} type="kinematicPosition" colliders={false} position={[spawn.x, spawn.y, spawn.z]}>
       <CapsuleCollider args={[0.55, 0.3]} />
     </RigidBody>
-    <PointerLockControls selector="#enter-tower" onLock={() => setLocked(true)} onUnlock={() => setLocked(false)} />
+    <PointerLockControls enabled={!cctvOpen} selector="#enter-tower" onLock={() => setLocked(true)} onUnlock={() => setLocked(false)} />
   </>
 }

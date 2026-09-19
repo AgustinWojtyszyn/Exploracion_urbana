@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Raycaster, Vector2, type Object3D } from 'three'
+import { useBuildingStore } from '../systems/buildingStore'
 import type { Interaction } from './Interactable'
 import { useSessionStore } from '../systems/sessionStore'
 
@@ -13,7 +14,7 @@ export function InteractionSystem() {
   const scan = () => {
     const state = useSessionStore.getState()
     target.current = null
-    if (state.locked && !state.journalOpen) {
+    if (state.locked && !state.journalOpen && !useBuildingStore.getState().cctvOpen) {
       ray.current.setFromCamera(center.current, camera); ray.current.far = 2.8
       // First opaque surface wins: clues cannot be read through walls.
       const hit = ray.current.intersectObjects(scene.children, true).find(h => !h.object.userData.ignoreInteraction)

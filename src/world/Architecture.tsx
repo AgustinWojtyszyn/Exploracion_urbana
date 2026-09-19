@@ -1,27 +1,34 @@
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import { useEffect, useMemo } from 'react'
 import { CuboidCollider, RigidBody } from '@react-three/rapier'
-import { BoxGeometry, CanvasTexture, MeshStandardMaterial, SRGBColorSpace } from 'three'
+import { BoxGeometry, CanvasTexture, SRGBColorSpace } from 'three'
 
 export type Vec3 = [number, number, number]
-const cube = new BoxGeometry(1, 1, 1)
-const palette = {
-  concrete: new MeshStandardMaterial({ color: '#696b68', roughness: 0.95 }),
-  plaster: new MeshStandardMaterial({ color: '#b7ad9e', roughness: 0.98 }),
-  tile: new MeshStandardMaterial({ color: '#8f8b78', roughness: 0.64 }),
-  terrazzo: new MeshStandardMaterial({ color: '#6e695f', roughness: 0.52, metalness: 0.03 }),
-  marble: new MeshStandardMaterial({ color: '#918a7d', roughness: 0.38 }),
-  metal: new MeshStandardMaterial({ color: '#3e4242', metalness: 0.62, roughness: 0.48 }),
-  dark: new MeshStandardMaterial({ color: '#1d2021', roughness: 0.92 }),
-  ochre: new MeshStandardMaterial({ color: '#9f7c45', roughness: 0.82 }),
-  brass: new MeshStandardMaterial({ color: '#8f7243', metalness: 0.72, roughness: 0.35 }),
-  red: new MeshStandardMaterial({ color: '#7f2826', roughness: 0.7 }),
-  light: new MeshStandardMaterial({ color: '#e8e0cb', emissive: '#d4c59f', emissiveIntensity: 2.8 }),
+import { palette, type MaterialName } from '../environment/materials'
+export { palette } from '../environment/materials'
+const geometries = new Map<string, BoxGeometry>()
+function box(size: Vec3) {
+  const key = size.join(',')
+  let geometry = geometries.get(key)
+  if (!geometry) {
+    const bevel = Math.min(...size) > .04 && Math.max(...size) < 3.5
+    geometry = bevel ? new RoundedBoxGeometry(...size, 2, Math.min(.014, Math.min(...size) * .16)) : new BoxGeometry(...size)
+    const uv = geometry.attributes.uv, p = geometry.attributes.position, n = geometry.attributes.normal
+    for (let i = 0; i < uv.count; i++) {
+      const nx = Math.abs(n.getX(i)), ny = Math.abs(n.getY(i)), nz = Math.abs(n.getZ(i))
+      if (nx > ny && nx > nz) uv.setXY(i, p.getZ(i), p.getY(i))
+      else if (ny > nz) uv.setXY(i, p.getX(i), p.getZ(i))
+      else uv.setXY(i, p.getX(i), p.getY(i))
+    }
+    geometries.set(key, geometry)
+  }
+  return geometry
 }
 
 export function Block({ position, size, material = 'concrete', rotation = [0, 0, 0], solid = true }: {
-  position: Vec3; size: Vec3; material?: keyof typeof palette; rotation?: Vec3; solid?: boolean
+  position: Vec3; size: Vec3; material?: MaterialName; rotation?: Vec3; solid?: boolean
 }) {
-  const mesh = <mesh geometry={cube} material={palette[material]} scale={size} receiveShadow castShadow dispose={null} />
+  const mesh = <mesh geometry={box(size)} material={palette[material]} receiveShadow castShadow={Math.min(...size) > .035} dispose={null} />
   return solid ? <RigidBody type="fixed" colliders={false} position={position} rotation={rotation}>
     <CuboidCollider args={[size[0] / 2, size[1] / 2, size[2] / 2]} />{mesh}
   </RigidBody> : <group position={position} rotation={rotation}>{mesh}</group>
@@ -33,8 +40,8 @@ export function Sign({ position, lines, width = 2.4, height = 0.8, rotation = [0
   const text = lines.join('\n')
   const texture = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 1024
-    canvas.height = Math.max(180, Math.round(1024 * height / width))
+    canvas.width = 512
+    canvas.height = Math.max(64, Math.min(512, Math.round(512 * height / width)))
     const ctx = canvas.getContext('2d')!
     ctx.fillStyle = paper ? '#d1c7ad' : '#18201f'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -46,8 +53,10 @@ export function Sign({ position, lines, width = 2.4, height = 0.8, rotation = [0
     ctx.textBaseline = 'middle'
     const rows = text.split('\n')
     const spacing = canvas.height / (rows.length + 1)
-    ctx.font = `600 ${Math.min(62, spacing * 0.55)}px monospace`
-    rows.forEach((line, i) => ctx.fillText(line, 512, spacing * (i + 1), 940))
+    const longest = Math.max(...rows.map(line => line.length), 1)
+    const fontSize = Math.min(rows.length === 1 ? canvas.height * .68 : spacing * .65, 470 / (longest * .61))
+    ctx.font = `600 ${fontSize}px monospace`
+    rows.forEach((line, i) => ctx.fillText(line, 256, spacing * (i + 1), 480))
     ctx.fillStyle = 'rgba(20,18,12,.08)'
     for (let i = 0; i < 34; i++) ctx.fillRect((i * 139) % 1024, (i * 53) % canvas.height, 20 + i % 31, 2)
     const texture = new CanvasTexture(canvas)

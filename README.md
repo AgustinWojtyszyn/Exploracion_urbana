@@ -30,16 +30,11 @@ React + TypeScript + Vite + React Three Fiber + Drei + React Three Rapier + Zust
 
 ## Estado actual
 
-El repositorio fue remodelado desde el prototipo anterior hacia TORRE 17.
+Planta baja con portería, CCTV de la escena, materiales procedurales, iluminación por sectores y oclusión ambiental opcional. El primer reclamo conecta libro de novedades, prueba del ascensor B, indicador 17, plano, llamada y apertura parcial.
 
-La base actual incluye:
+Controles: **WASD** caminar, **mouse** mirar, **E** interactuar, **Esc** pausar, **M** silenciar, **Q** alternar oclusión ambiental. Teclado y mouse; el turno se reinicia al recargar.
 
-- lobby/portería/ascensores como escena de presentación;
-- primera persona y colisiones reutilizadas;
-- interacción contextual reutilizada;
-- audio procedural por sector;
-- estado de edificio e incidentes;
-- primer evento sobrenatural preparado alrededor del piso 17;
-- nueva dirección visual y de producto.
+    npm test
+    npm run build
 
-El objetivo inmediato NO es crear el edificio entero: es hacer que planta baja + primer incidente se sientan premium.
+Recorrido completo, arquitectura y límites: [notas de la iteración](docs/ITERATION_NOTES.md).
