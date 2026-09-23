@@ -133,5 +133,3 @@ npm run build
 - No se incluyen marcas comerciales dentro de las mecánicas.
 - Los nombres de clubes se usan como identificadores deportivos.
 - Durante esta demo, los escudos se cargan desde páginas públicas de Wikipedia/Wikimedia cuando están disponibles.
-
-<!-- ci verification -->
