@@ -1,0 +1,9 @@
+/* Ordered scene layers; gameplay stays in src/games/. */
+@import './career-shell.css';
+@import './career-overview.css';
+@import './career-finals.css';
+@import './career-progression.css';
+@import './career-market.css';
+@import './game-library.css';
+@import './career-polish.css';
+@import './coach.css';

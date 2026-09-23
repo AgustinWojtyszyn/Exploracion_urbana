@@ -1,0 +1,215 @@
+.career-training {
+  position:relative;
+  padding:25px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:radial-gradient(ellipse at right top,#1b688327,transparent 55%),var(--surface)
+}
+.career-training>header {
+  position:relative;
+  z-index:2;
+  margin-bottom:25px
+}
+.career-training h2,.career-history h2,.game-library h2 {
+  font:700 37px/1.05 var(--font-display);
+  margin:8px 0
+}
+.career-training header>b {
+  font-size:10px;
+  color:var(--cyan);
+  letter-spacing:2px
+}
+.career-training__figure {
+  position:absolute;
+  top:14px;
+  right:15px;
+  width:90px;
+  height:145px;
+  opacity:.2
+}
+.career-training__drills {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
+}
+.career-training__drills>button {
+  text-align:left;
+  position:relative;
+  overflow:hidden;
+  padding:17px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surface-2);
+  color:var(--text);
+  min-height:166px
+}
+.career-training__drills>button:active {
+  transform:scale(.98)
+}
+.career-training__drills>button>div {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px
+}
+.career-training__drills span {
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1px
+}
+.career-training__drills strong {
+  font:700 32px var(--font-display)
+}
+.career-training__drills strong small {
+  font-size:18px;
+  color:var(--cyan)
+}
+.career-training__drills meter {
+  width:100%;
+  height:8px;
+  margin:12px 0 8px;
+  background:var(--surface-3);
+  appearance:none
+}
+.career-training__drills meter::-webkit-meter-bar {
+  background:var(--surface-3);
+  border:0
+}
+.career-training__drills meter::-webkit-meter-optimum-value {
+  background:var(--cyan);
+  transition:width .5s
+}
+.career-training__drills meter::-moz-meter-bar {
+  background:var(--cyan);
+  transition:width .5s
+}
+.career-training__drills p {
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:12px
+}
+.career-training__drills>button>small {
+  font-size:9px;
+  font-weight:800;
+  color:var(--cyan)
+}
+.career-training__drills em {
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--surface);
+  color:var(--good);
+  font:700 36px var(--font-display);
+  animation:career-training-gain 1.2s ease both;
+  pointer-events:none
+}
+.career-history {
+  padding:10px 0
+}
+.career-history>header {
+  padding:10px 10px 22px
+}
+.career-history>header>span:last-child {
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--muted)
+}
+.career-history ol {
+  list-style:none;
+  margin:0;
+  padding:0
+}
+.career-history li {
+  position:relative;
+  display:grid;
+  grid-template-columns:46px 1fr;
+  gap:14px;
+  padding-bottom:20px
+}
+.career-history li:before {
+  content:'';
+  position:absolute;
+  left:22px;
+  top:26px;
+  bottom:-7px;
+  width:1px;
+  background:var(--line-strong)
+}
+.career-history li:last-child:before {
+  display:none
+}
+.career-history__year {
+  position:relative;
+  z-index:1;
+  align-self:start;
+  text-align:center;
+  background:var(--bg);
+  color:var(--cyan);
+  font:700 31px var(--font-display);
+  padding:5px 0
+}
+.career-history article {
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  animation:lg-scene-in .4s ease both
+}
+.career-history article header {
+  display:flex;
+  gap:12px;
+  align-items:center
+}
+.career-history article header>div {
+  flex:1
+}
+.career-history header h3 {
+  font:700 25px var(--font-display);
+  margin:5px 0
+}
+.career-history article header span {
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:1px
+}
+.career-history article header>b {
+  font:700 30px var(--font-display);
+  color:var(--cyan);
+  display:flex;
+  flex-direction:column;
+  align-items:center
+}
+.career-history article header>b small {
+  font:700 7px 'Manrope',sans-serif;
+  letter-spacing:1px;
+  color:var(--muted)
+}
+.career-history__numbers {
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  font-size:10px;
+  color:var(--muted);
+  padding:12px 0;
+  border-block:1px solid var(--line);
+  margin-top:12px
+}
+.career-history article p {
+  font-size:11px;
+  line-height:1.7;
+  margin:12px 0 0;
+  color:var(--muted)
+}
+.career-history__trophy {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:12px;
+  color:var(--warn);
+  margin-top:12px
+}
+.career-history__trophy .lg-trophy {
+  width:28px;
+  height:36px
+}

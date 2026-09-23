@@ -1,46 +1,118 @@
 # LEYENDA
 
-Juego web de carrera futbolera y decisiones, diseñado **mobile-first**.
+Juego de carrera futbolística mobile-first construido con React + Vite.
 
-## Modos
+La idea central es simple: elegís dónde empezar, definís tu estilo de juego y construís una carrera completa a través de rendimiento, minijuegos, mercado, títulos, ascensos, descensos y decisiones puntuales.
 
-- **Jugador**: 9, 10, 7, 5, 2 · Leñador y 1 · Arquero.
-- **Entrenador**: gestión de club, táctica, vestuario, juveniles, presupuesto y presión de directiva/hinchas.
-- **Desafío diario**: misma semilla para comparar carreras.
-- **Minijuegos**: penales, tiros libres, pases, reflejos, duelo defensivo y scouting.
-- **Ranking**: local sin configuración y global cuando se conecta Supabase.
+## Estado actual
 
-## Identidad visual
+La versión de prueba está enfocada en Argentina.
 
-- sistema visual azul;
-- tema oscuro y claro persistente;
-- Barlow Condensed para títulos;
-- Manrope para interfaz;
-- UI táctil y responsive desde 320 px;
-- navegación inferior en juego;
-- escudos geométricos **originales generados por LEYENDA**, no escudos oficiales.
+- Primera División + Primera Nacional
+- Selección manual de país, división y club
+- Modo Jugador y Modo Entrenador
+- Carrera de 17 años hasta retiro entre 39 y 42
+- Estilos permanentes: Cabulero, Mixto y Habilidoso
+- 15 minijuegos de habilidad
+- 10 minijuegos de cábala
+- Finales, permanencias y ascensos definidos por minijuegos
+- Mercado de pases con renovaciones y ofertas desde las primeras temporadas
+- Ascensos y descensos persistentes
+- Huella en el club separada de reputación general
+- Vitrina de trofeos
+- Gloria y score de carrera escalados a carreras largas
+- Ranking local/global cuando el servicio esté disponible
+- Login local de prueba, sin backend
+- Tema oscuro/claro
+- Navegación lateral
+- Escudos argentinos resueltos desde referencias explícitas de Wikipedia/Wikimedia
 
-## Datos de fútbol
+## Filosofía de producto
 
-LEYENDA no usa nombres de jugadores reales ni marcas comerciales.
+LEYENDA toma inspiración de los juegos rápidos de carrera futbolística, pero no replica textos, arte ni branding de terceros.
 
-Los nombres de clubes del catálogo se obtienen de datasets públicos de OpenFootball. Las ligas se muestran con nombres genéricos por país y división, por ejemplo:
+Prioridades:
 
-- Liga Española · 1ª División
-- Liga Francesa · 2ª División
-- Liga Inglesa · 1ª División
+1. Mucho juego, poco texto.
+2. Una temporada debe resolverse rápido.
+3. Los partidos decisivos se juegan, no se sortean por detrás.
+4. Las historias aparecen por hitos, no todos los años.
+5. La interfaz debe ser cómoda desde teléfono.
+6. Mercado, minijuegos y progresión son el centro de la experiencia.
 
-No se incluyen nombres comerciales/patrocinados de ligas ni escudos oficiales.
+## Flujo de carrera
 
-### Actualizar datos
-
-```bash
-npm run sync:data
+```
+LOGIN DEMO
+  ↓
+PAÍS
+  ↓
+DIVISIÓN
+  ↓
+CLUB
+  ↓
+POSICIÓN
+  ↓
+CABULERO / MIXTO / HABILIDOSO
+  ↓
+POTENCIADOR INICIAL
+  ↓
+TEMPORADA
+  ↓
+PARTIDO DECISIVO
+  ↓
+MERCADO
+  ↓
+SIGUIENTE TEMPORADA
 ```
 
-El script `scripts/sync-football-data.mjs` descubre archivos de divisiones disponibles en `openfootball/football.json`, toma la versión más reciente verificable y genera `src/data/verifiedLeagues.ts`.
+## Minijuegos
 
-Nunca inventa pertenencia de un club a una división: si la fuente no lo verifica, no se incorpora automáticamente.
+### Habilidoso
+
+Incluye definición, timing, memoria, lectura de espacios, control bajo presión, pases y reflejos.
+
+Entre otros:
+
+- Penales
+- Tiro libre
+- Slalom
+- Reflejos
+- Duelo defensivo
+- Pizarra relámpago
+- La diagonal
+- La corrida
+- Ojo en la pelota
+- La señal
+- El aguante
+- Pase al hueco
+- El hueco
+- Saque largo
+- Salida bajo presión
+
+### Cabulero
+
+Incluye juegos de azar controlado, lectura, memoria e intuición.
+
+- El pálpito
+- Dados del 7
+- Moneda de vestuario
+- Número marcado
+- La camiseta
+- Tres vasos
+- Rueda del destino
+- La torre
+- Grilla de la suerte
+- Los tapones
+
+## Stack
+
+- React 19
+- TypeScript
+- Vite
+- CSS mobile-first
+- localStorage/sessionStorage para la demo
+- Wikimedia/Wikipedia para multimedia pública de clubes
 
 ## Desarrollo
 
@@ -55,30 +127,9 @@ Build:
 npm run build
 ```
 
-## Ranking global
+## Alcance legal / de contenido
 
-La app funciona sin backend usando ranking local.
-
-Para ranking global:
-
-1. crear/configurar un proyecto Supabase;
-2. ejecutar `supabase/migrations/20260919_leyenda_global_rankings.sql`;
-3. configurar:
-
-```env
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-```
-
-La app detecta automáticamente esas variables y cambia de ranking local a global.
-
-## Principios de contenido
-
-- sin jugadores reales;
-- sin marcas comerciales;
-- sin escudos oficiales;
-- clubes reales solamente cuando provienen de fuentes verificables;
-- ligas con nombres genéricos por país/división;
-- carreras finitas y puntuables;
-- decisiones con consecuencias;
-- mobile-first como prioridad de producto.
+- No se incluyen nombres de futbolistas reales.
+- No se incluyen marcas comerciales dentro de las mecánicas.
+- Los nombres de clubes se usan como identificadores deportivos.
+- Durante esta demo, los escudos se cargan desde páginas públicas de Wikipedia/Wikimedia cuando están disponibles.

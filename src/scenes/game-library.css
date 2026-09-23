@@ -1,0 +1,247 @@
+.game-library {
+  padding:10px 0
+}
+.game-library>header {
+  padding:10px 8px 18px
+}
+.game-library p {
+  font-size:12px;
+  color:var(--muted);
+  margin:10px 0
+}
+.game-library__grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px
+}
+.game-library__grid>button {
+  padding:0;
+  position:relative;
+  overflow:hidden;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  color:var(--text);
+  transition:transform .2s,border-color .2s
+}
+.game-library__grid>button:hover {
+  transform:translateY(-3px);
+  border-color:var(--cyan)
+}
+.game-library__grid>button:active {
+  transform:scale(.98)
+}
+.game-library__grid>button>div:not(.game-preview) {
+  padding:15px 16px 19px;
+  width:100%
+}
+.game-library__grid strong {
+  font:700 25px/1 var(--font-display);
+  display:block;
+  margin:0 0 7px
+}
+.game-library__grid small {
+  font-size:10px;
+  color:var(--muted)
+}
+.game-library__number {
+  position:absolute;
+  right:12px;
+  top:12px;
+  color:#b5e8ff80;
+  font:700 28px var(--font-display)
+}
+.game-library__play {
+  position:absolute;
+  right:12px;
+  bottom:14px;
+  color:var(--cyan);
+  font-size:21px
+}
+.game-library__grid>button>.lg-trophy {
+  position:absolute;
+  right:15px;
+  top:30px;
+  width:45px
+}
+.game-preview {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  height:155px;
+  width:100%;
+  background:radial-gradient(ellipse at 50% 0,#215376,#08263c);
+  border-bottom:1px solid #5188a133;
+  pointer-events:none
+}
+.game-preview .lg-pitch-lines {
+  opacity:.6
+}
+.game-preview__player {
+  position:absolute;
+  width:62px;
+  height:100px;
+  left:35%;
+  top:30px;
+  z-index:2
+}
+.game-preview__ball {
+  position:absolute;
+  width:20px;
+  height:20px;
+  left:61%;
+  top:109px;
+  z-index:3
+}
+.game-preview .lg-goal {
+  height:48%;
+  top:18%;
+  left:13%;
+  width:74%;
+  border-width:3px;
+  z-index:0
+}
+.game-preview__target {
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:92px;
+  color:#78e5ff;
+  text-shadow:0 0 20px #6ed4ff88
+}
+.game-preview__coin {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-18deg);
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  border:7px double #fce09a;
+  background:linear-gradient(135deg,#ffe3a1,#b58532);
+  color:#7c591d;
+  display:grid;
+  place-items:center;
+  font:700 56px var(--font-display);
+  box-shadow:0 5px 0 #8c6224
+}
+.game-preview__wheel {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:106px;
+  height:106px;
+  border-radius:50%;
+  border:5px solid #eed186;
+  background:conic-gradient(#956a2b 0 60deg,#20415d 60deg 120deg,#208e9f 120deg 180deg,#193346 180deg 240deg,#386180 240deg 300deg,#0a506e 300deg);
+  display:grid;
+  place-items:center;
+  font-size:38px;
+  color:#ffda8e
+}
+.game-preview__stand {
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:70px;
+  color:#e8f7ff
+}
+.game-preview__cards {
+  position:absolute;
+  inset:30px 20%;
+  background:#d9f0fc;
+  color:#12354d;
+  border:4px double #204963;
+  border-radius:8px;
+  font:700 55px var(--font-display);
+  display:flex;
+  align-items:center;
+  justify-content:space-evenly;
+  transform:rotate(-9deg)
+}
+.game-preview__cards b {
+  color:#c08d39
+}
+.game-preview__cups {
+  position:absolute;
+  inset:43px 12% 26px;
+  display:flex;
+  justify-content:center;
+  gap:9px
+}
+.game-preview__cups i {
+  flex:1;
+  max-width:52px;
+  background:linear-gradient(90deg,#157294,#85dbef,#246e9a);
+  clip-path:polygon(18% 0,82% 0,100% 95%,50% 100%,0 95%);
+  border-radius:8px
+}
+.game-preview__timing {
+  position:absolute;
+  inset:auto 10% 18px;
+  height:14px;
+  background:linear-gradient(90deg,#bd5062 0 27%,#e6b662 27% 43%,#54c8a4 43% 60%,#e6b662 60% 73%,#bd5062 73%);
+  border:1px solid #c4efff;
+  z-index:3
+}
+.game-preview__sequence {
+  position:absolute;
+  bottom:17px;
+  left:15%;
+  right:15%;
+  background:#072539e8;
+  padding:9px;
+  text-align:center;
+  letter-spacing:3px;
+  font-size:11px;
+  color:#8ae4fb;
+  z-index:3
+}
+.coach-challenge {
+  position:relative;
+  padding:0 18px 20px;
+  min-height:440px
+}
+.coach-challenge__pitch {
+  position:relative;
+  height:190px;
+  margin:0 -18px;
+  background:repeating-linear-gradient(#123b3c 0 25%,#15433f 25% 50%)
+}
+.coach-challenge__pitch .lg-actor {
+  width:38px;
+  height:65px
+}
+.coach-challenge>p {
+  font-size:13px;
+  line-height:1.65;
+  color:#bdd8e9;
+  margin:20px 0
+}
+.coach-challenge>div:last-of-type:not(.lg-feedback) {
+  display:grid;
+  gap:7px
+}
+.coach-challenge button {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  text-align:left;
+  border:1px solid #5c99b94d;
+  border-radius:8px;
+  background:#12324b;
+  color:#e3f3ff;
+  padding:14px;
+  font-size:11px
+}
+.coach-challenge .lg-feedback strong {
+  font-size:25px;
+  max-width:80%;
+  text-align:center
+}

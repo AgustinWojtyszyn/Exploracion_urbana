@@ -1,0 +1,277 @@
+.career-philosophy {
+  text-align:center;
+  padding:8px 0;
+  position:relative;
+  overflow:hidden
+}
+.career-philosophy__preview {
+  height:125px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  margin:20px 0
+}
+.career-philosophy__preview>span {
+  font:700 110px/1 var(--font-display);
+  color:var(--cyan);
+  filter:drop-shadow(0 0 25px #58caff66);
+  animation:career-signal 2s ease-in-out infinite alternate
+}
+.career-philosophy__preview i {
+  position:absolute;
+  width:110px;
+  height:110px;
+  border:1px solid #50dbff26;
+  border-radius:50%;
+  transform:rotateX(55deg) rotateZ(20deg)
+}
+.career-philosophy__preview i:nth-of-type(2) {
+  width:190px;
+  height:190px
+}
+.career-philosophy__preview i:nth-of-type(3) {
+  width:260px;
+  height:260px
+}
+.career-philosophy--cabulero .career-philosophy__preview>span {
+  color:#eac882;
+  animation:career-spin 8s linear infinite
+}
+.career-philosophy--mixto .career-philosophy__preview>span {
+  color:#a0b6ff
+}
+.career-philosophy h2 {
+  font-size:32px!important;
+  margin-bottom:7px!important
+}
+.career-philosophy p {
+  max-width:350px;
+  margin:0 auto 22px!important;
+  font-size:12px!important
+}
+.career-philosophy__choices {
+  display:flex;
+  gap:8px;
+  margin:16px 0
+}
+.career-philosophy__choices button {
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  align-items:center;
+  padding:12px 4px;
+  gap:9px;
+  min-height:74px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800
+}
+.career-philosophy__choices b {
+  font-size:24px
+}
+.career-philosophy__choices button[aria-pressed=true] {
+  background:var(--surface-3);
+  border-color:var(--cyan);
+  color:var(--text)
+}
+.career-match-intro {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:#07182b;
+  border:1px solid #75c1ed40;
+  border-radius:20px;
+  text-align:center;
+  color:#fff;
+  padding:30px 22px 24px;
+  animation:lg-scene-in .5s ease both;
+  max-width:720px;
+  margin:auto
+}
+.career-match-intro__tag {
+  font:700 15px var(--font-display);
+  letter-spacing:5px;
+  color:#efd088
+}
+.career-match-intro h2 {
+  font:700 clamp(32px,8vw,48px)/1.05 var(--font-display);
+  margin:12px 0!important;
+  color:#fff
+}
+.career-match-intro__trophy {
+  margin:14px 0
+}
+.career-match-intro__trophy .lg-trophy {
+  height:100px;
+  width:83px;
+  animation:career-trophy .8s ease both
+}
+.career-match-intro__versus {
+  display:grid;
+  grid-template-columns:1fr 35px 1fr;
+  align-items:center;
+  gap:12px;
+  margin:15px 0 24px
+}
+.career-match-intro__versus>div {
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  gap:15px
+}
+.career-match-intro__versus strong {
+  font:700 22px/1.05 var(--font-display);
+  max-width:180px;
+  text-wrap:balance
+}
+.career-match-intro__versus>b {
+  font:600 24px var(--font-display);
+  color:#82a9c2
+}
+.career-match-intro__season {
+  font-size:9px;
+  letter-spacing:2px;
+  color:#acd1e8
+}
+.career-match-intro__actions {
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+  flex-wrap:wrap
+}
+.career-match-intro__actions button {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:190px;
+  min-height:60px;
+  border-radius:8px;
+  font-size:13px
+}
+.career-match-intro__actions small {
+  font-size:8px;
+  letter-spacing:1px;
+  opacity:.8
+}
+.career-match-intro__actions .match-luck {
+  background:linear-gradient(120deg,#f5d18a,#c49748);
+  color:#33250f
+}
+.career-summary-backdrop {
+  position:fixed;
+  inset:0;
+  z-index:120;
+  background:#020914d9;
+  backdrop-filter:blur(8px);
+  display:grid;
+  place-items:center;
+  padding:18px;
+  overflow-y:auto
+}
+.career-summary {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  width:min(100%,520px);
+  max-height:calc(100svh - 36px);
+  overflow-y:auto;
+  padding:28px;
+  text-align:center;
+  background:#071a2e;
+  color:#f2f9ff;
+  border:1px solid #478eb455;
+  border-radius:20px;
+  box-shadow:0 30px 100px #0008;
+  animation:lg-result-in .5s ease both
+}
+.career-summary.is-champion {
+  border-color:#e8c47488
+}
+.career-summary h2 {
+  font:700 43px/.98 var(--font-display);
+  margin:14px auto;
+  color:#fff;
+  max-width:330px
+}
+.career-summary__club {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:12px 0
+}
+.career-summary__club .lg-trophy {
+  animation:career-trophy .8s ease both
+}
+.career-summary h3 {
+  font:700 24px var(--font-display);
+  margin:5px 0 20px
+}
+.career-summary__stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:16px 0;
+  border-block:1px solid #8acafa26
+}
+.career-summary__stats>div {
+  display:flex;
+  flex-direction:column;
+  gap:4px
+}
+.career-summary__stats b {
+  font:700 36px var(--font-display);
+  color:#f8fbff
+}
+.career-summary__stats span {
+  font-size:8px;
+  letter-spacing:1px;
+  color:#a7c9de
+}
+.career-summary__evolution {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 8px;
+  border-bottom:1px solid #8acafa26
+}
+.career-summary__evolution>span {
+  font-size:9px;
+  letter-spacing:1px;
+  color:#9ccee5
+}
+.career-summary__evolution strong {
+  font:700 29px var(--font-display)
+}
+.career-summary__evolution i {
+  color:#63e9bd;
+  font-style:normal;
+  margin:0 10px
+}
+.career-summary__moment {
+  text-align:left;
+  margin:20px 0
+}
+.career-summary__moment span {
+  font-size:8px;
+  letter-spacing:2px;
+  color:#efcd82
+}
+.career-summary__moment strong {
+  display:block;
+  font:700 22px var(--font-display);
+  margin-top:6px
+}
+.career-summary__moment p {
+  font-size:11px;
+  color:#b8d2e4;
+  line-height:1.65;
+  margin:5px 0
+}
+.career-summary .play-button {
+  font-size:11px;
+  min-height:50px
+}

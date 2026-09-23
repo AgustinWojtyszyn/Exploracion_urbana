@@ -1,0 +1,174 @@
+.career-market__header {
+  position:relative;
+  padding:26px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:20px;
+  background:linear-gradient(120deg,var(--surface-2),var(--surface));
+  border-radius:18px
+}
+.career-market__header h2 {
+  font:700 42px/1 var(--font-display);
+  margin:13px 0 22px
+}
+.career-market__notification {
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+.career-market__notification>i {
+  width:40px;
+  height:48px;
+  border:2px solid var(--cyan);
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  color:var(--cyan);
+  font-style:normal;
+  animation:career-phone .55s ease 2
+}
+.career-market__notification strong {
+  font-size:10px;
+  letter-spacing:1px
+}
+.career-market__notification span {
+  display:block;
+  font-size:11px;
+  margin-top:5px;
+  color:var(--muted)
+}
+.career-market .market-actions {
+  margin-bottom:26px
+}
+.career-offer-track {
+  display:flex;
+  gap:17px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  overscroll-behavior-x:contain;
+  padding:6px 4px 24px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--cyan) var(--surface);
+  -webkit-overflow-scrolling:touch
+}
+.career-offer {
+  flex:0 0 min(83vw,355px);
+  scroll-snap-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  padding:20px 22px;
+  border:1px solid var(--line-strong);
+  border-radius:17px;
+  background:radial-gradient(ellipse at 50% 20%,#1d8ecf22,transparent 50%),var(--surface);
+  text-align:center;
+  overflow:hidden
+}
+.career-offer__number {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  font:700 30px var(--font-display);
+  color:var(--muted-2);
+  margin-bottom:14px
+}
+.career-offer__number span {
+  font:700 8px 'Manrope',sans-serif;
+  letter-spacing:2px;
+  color:var(--cyan)
+}
+.career-offer>span:not(.real-crest):not(.crest):not(.crest-skeleton) {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:12px
+}
+.career-offer h3 {
+  font:700 34px/1 var(--font-display);
+  margin:10px 0
+}
+.career-offer__role {
+  color:var(--warn);
+  font-size:9px;
+  letter-spacing:2px
+}
+.career-offer dl {
+  width:100%;
+  margin:22px 0 16px;
+  text-align:left;
+  border-top:1px solid var(--line)
+}
+.career-offer dl>div {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+  gap:10px
+}
+.career-offer dt {
+  font-size:8px;
+  letter-spacing:.8px;
+  color:var(--muted)
+}
+.career-offer dd {
+  font:700 23px var(--font-display);
+  margin:0
+}
+.career-offer>small {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  min-height:45px
+}
+.career-offer>.play-button {
+  font-size:11px;
+  min-height:48px;
+  margin-top:14px;
+  border-radius:7px
+}
+.career-offer__reject {
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:9px;
+  padding:15px;
+  min-height:44px
+}
+.career-signing {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:#07182b;
+  color:#fff;
+  min-height:500px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:35px 24px;
+  border:1px solid #dcba6866;
+  border-radius:20px;
+  gap:18px;
+  animation:lg-scene-in .5s ease both
+}
+.career-signing>span {
+  font-size:10px;
+  letter-spacing:3px;
+  color:#eac678
+}
+.career-signing__shirt {
+  width:100px;
+  height:145px
+}
+.career-signing h2 {
+  font:700 40px/1 var(--font-display);
+  margin:0
+}
+.career-signing p {
+  font-size:12px;
+  color:#a8cfe3
+}
+.career-signing .play-button {
+  width:min(100%,360px)
+}

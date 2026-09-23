@@ -1,0 +1,313 @@
+.lg-reaction {
+  background:radial-gradient(ellipse at center,#173d61,#061b30)
+}
+.lg-reaction-target {
+  position:absolute;
+  width:76px;
+  height:76px;
+  transform:translate(-50%,-50%);
+  border:2px solid #b5faff;
+  border-radius:50%;
+  background:radial-gradient(#9bf4ff,#22a4d799 48%,#1868b377 50%);
+  box-shadow:0 0 0 10px #52d5ff15,0 0 38px #26adff66;
+  z-index:4;
+  animation:lg-target-in .18s ease-out both;
+  touch-action:none!important
+}
+.lg-reaction-target b {
+  font-size:40px;
+  color:#fff;
+  line-height:1
+}
+.lg-reaction-target i {
+  position:absolute;
+  inset:-9px;
+  border:1px solid #84eaff6b;
+  border-radius:50%;
+  animation:lg-target-ring .8s ease infinite
+}
+.lg-reaction-target:active {
+  filter:brightness(1.6)
+}
+.lg-timing-instrument {
+  position:absolute;
+  top:53%;
+  left:7%;
+  right:7%;
+  text-align:center
+}
+.lg-timing-instrument>span {
+  font-size:10px;
+  letter-spacing:2px;
+  color:#c1ecf4
+}
+.lg-timing-track {
+  height:45px;
+  background:linear-gradient(#e75b73,#973b52);
+  border:2px solid #d3edff66;
+  position:relative;
+  overflow:visible;
+  margin-top:12px;
+  border-radius:6px;
+  box-shadow:0 6px 25px #0004
+}
+.lg-timing-track>i {
+  position:absolute;
+  top:0;
+  bottom:0
+}
+.lg-zone-yellow {
+  background:#e7b85b
+}
+.lg-zone-green {
+  background:#48d39f
+}
+.lg-zone-perfect {
+  background:#edfff7;
+  width:3%;
+  box-shadow:0 0 18px #aaffd5
+}
+.lg-timing-marker {
+  position:absolute;
+  left:0;
+  top:-12px;
+  height:65px;
+  width:100%;
+  border-left:3px solid white;
+  pointer-events:none
+}
+.lg-timing-marker:before {
+  content:'';
+  position:absolute;
+  top:-1px;
+  left:-4px;
+  width:11px;
+  height:9px;
+  background:#fff;
+  clip-path:polygon(0 0,100% 0,50% 100%)
+}
+.lg-timing-labels {
+  display:flex;
+  justify-content:space-between;
+  margin-top:12px;
+  font-size:9px;
+  color:#c4e1e6
+}
+.lg-timing-labels b {
+  color:#96ffd2
+}
+.lg-scene .lg-touch-action {
+  position:absolute;
+  bottom:25px;
+  left:25%;
+  width:50%;
+  height:52px;
+  border:1px solid #80e7ff;
+  background:#123f57;
+  border-radius:30px;
+  font-weight:800;
+  letter-spacing:3px;
+  box-shadow:0 4px 0 #072235
+}
+.lg-touch-action:active {
+  transform:translateY(3px)
+}
+.lg-pass-window {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  width:54px;
+  height:34px;
+  border:2px dashed #ffaaa666;
+  border-radius:50%;
+  background:#c948421b;
+  pointer-events:none;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  color:#ffc7c4
+}
+.lg-pass-window.is-open {
+  border-color:#79ffc8;
+  background:#57ebaa35;
+  color:#caffdf;
+  box-shadow:0 0 22px #5df3b84d
+}
+.lg-pass-window span {
+  font-size:23px;
+  font-weight:800
+}
+.lg-passing .lg-actor {
+  width:42px;
+  height:68px
+}
+.lg-passing .lg-ball {
+  width:23px;
+  height:23px
+}
+.lg-dribbler {
+  transition:left .35s cubic-bezier(.2,.8,.3,1),top .4s ease
+}
+.lg-defender-shadow {
+  position:absolute;
+  top:42%;
+  height:32%;
+  width:22%;
+  background:linear-gradient(#ff59754d,transparent);
+  clip-path:polygon(45% 0,70% 0,100% 100%,0 100%);
+  opacity:0;
+  transition:opacity .18s
+}
+.lg-defender-shadow.is-visible {
+  opacity:1
+}
+.lg-swipe-hints {
+  position:absolute;
+  bottom:16px;
+  left:6%;
+  right:6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px
+}
+.lg-swipe-hints button {
+  border:1px solid #9cedff66;
+  background:#0a263a99;
+  border-radius:50%;
+  width:48px;
+  height:48px;
+  font-size:28px
+}
+.lg-swipe-hints span {
+  font-size:8px;
+  letter-spacing:1px;
+  color:#bddedc
+}
+.lg-memory-count {
+  position:absolute;
+  top:48%;
+  left:0;
+  right:0;
+  text-align:center;
+  color:#90b8c7;
+  font:700 23px var(--font-display);
+  letter-spacing:3px
+}
+.lg-memory-player {
+  position:absolute;
+  width:88px;
+  height:100px;
+  border:1px solid #b4faff26;
+  background:radial-gradient(#0b416e88,transparent);
+  border-radius:50%;
+  transform:translate(-50%,-30%);
+  transition:box-shadow .12s,background .12s;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:3
+}
+.lg-memory-player .lg-player {
+  height:86px;
+  width:54px
+}
+.lg-memory-player span {
+  position:absolute;
+  bottom:0;
+  right:5px;
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  background:#05243b;
+  border:1px solid #a1e1ff44;
+  border-radius:50%;
+  font-size:11px
+}
+.lg-scene .lg-memory-player:disabled {
+  opacity:1
+}
+.lg-memory-player.is-lit {
+  background:#77e9ff70;
+  border-color:#abffff;
+  box-shadow:0 0 30px #50e2ff,0 0 0 8px #50e2ff20
+}
+.lg-memory-player.is-selected {
+  border-color:#73ecc0;
+  background:#35bf9833
+}
+.lg-keeper-zones {
+  position:absolute;
+  inset:0;
+  z-index:9;
+  pointer-events:none
+}
+.lg-keeper-zones button {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  pointer-events:auto;
+  width:56px;
+  height:56px;
+  border:1px solid #cef7ff44;
+  border-radius:50%;
+  background:#102f4426;
+  font-size:27px;
+  color:#d9fcff99
+}
+.lg-keeper-zones button:active {
+  background:#b8fbff55
+}
+.lg-keeper-game .lg-flying-ball {
+  z-index:10
+}
+@keyframes lg-target-in {
+  from {
+    opacity:0;
+    scale:.65
+  }
+  to {
+    opacity:1;
+    scale:1
+  }
+}
+@keyframes lg-target-ring {
+  to {
+    transform:scale(1.28);
+    opacity:0
+  }
+}
+
+.lg-shot-power { position:absolute; left:15%; right:15%; bottom:17%; display:flex; align-items:center; gap:10px; padding:10px; background:#061b32df; border:1px solid #88ddf94d; border-radius:8px; z-index:12; pointer-events:none; }
+.lg-shot-power span { font-size:8px; letter-spacing:1px; }
+.lg-shot-power>i { height:6px; flex:1; background:#16344d; border-radius:6px; overflow:hidden; }
+.lg-shot-power b { display:block; height:100%; background:linear-gradient(90deg,#66efbb,#b4efc4,#efc66e); transform-origin:left; }
+.lg-shot-power strong { font-size:11px; color:#a2f5db; }
+
+.lg-memory-player.is-selected span { animation:lg-feedback-in .18s ease both; }
+
+.lg-keyboard-aim { position:absolute; transform:translate(-50%,-50%); font-size:32px; color:#ffdf89; z-index:9; pointer-events:none; }
+.lg-misfire { position:absolute; top:60px; left:0; right:0; text-align:center; color:#ff9a9f; font-size:9px; letter-spacing:2px; pointer-events:none; animation:lg-misfire .65s ease both; }
+@keyframes lg-misfire { 0%,65% { opacity:1; } 100% { opacity:0; } }
+
+
+/* Publicly documented football-game concepts, independently implemented: tactical 3x3 + power shot */
+.lg-tactic-grid{background:radial-gradient(circle at 50% 34%,#174b55,#071c2d 64%)}
+.lg-tactic-grid__board{position:absolute;left:50%;top:51%;width:min(78vw,330px);aspect-ratio:1;transform:translate(-50%,-50%);display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #9cecff55;background:#071d2cdd;box-shadow:0 24px 60px #0008,0 0 0 8px #62e9cb0d}
+.lg-tactic-grid__board button{min-width:0;border:0;border-right:1px solid #a4eaff36;border-bottom:1px solid #a4eaff36;background:linear-gradient(145deg,#123248cc,#0a2134cc);display:grid;place-items:center;color:#fff;touch-action:manipulation}
+.lg-tactic-grid__board button:nth-child(3n){border-right:0}.lg-tactic-grid__board button:nth-child(n+7){border-bottom:0}
+.lg-tactic-grid__board button:not(:disabled):active{background:#265a66}.lg-tactic-grid__board button:disabled{opacity:1}
+.lg-tactic-grid__board span{font:900 clamp(30px,10vw,54px) var(--font-display);filter:drop-shadow(0 0 12px #0006)}
+.lg-tactic-grid__board .is-you{color:#74f0c1}.lg-tactic-grid__board .is-rival{color:#ff7786}
+.lg-tactic-grid__legend{position:absolute;left:8%;right:8%;bottom:18px;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:12px;padding:10px 12px;border:1px solid #9cecff2e;background:#061a29dd;border-radius:10px;font-size:9px;letter-spacing:1px;color:#b9dbe4}
+.lg-tactic-grid__legend span{display:flex;align-items:center;gap:5px}.lg-tactic-grid__legend span b{font-size:15px;color:#76eec2}.lg-tactic-grid__legend span:nth-child(2) b{color:#ff7e8c}.lg-tactic-grid__legend strong{text-align:right;color:#d9fbff}
+
+.lg-power-shot{background:radial-gradient(circle at 50% 22%,#26506d,#07182a 68%)}
+.lg-power-shot .lg-goal{top:15%;transform:translateX(-50%) scale(.92)}
+.lg-power-shot__panel{position:absolute;left:8%;right:8%;top:47%;padding:14px;border:1px solid #87dfff42;background:#061a2bdd;border-radius:12px;box-shadow:0 18px 45px #0007}
+.lg-power-shot__readout{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 12px}.lg-power-shot__readout span{font-size:9px;letter-spacing:2px;color:#afdce8}.lg-power-shot__readout strong{grid-row:1/3;grid-column:2;font:900 28px var(--font-display);color:#f4fbff}.lg-power-shot__readout small{font-size:8px;letter-spacing:1px;color:#75efbd}
+.lg-power-shot__meter{height:24px;margin-top:12px;position:relative;overflow:hidden;border:1px solid #9edfff44;border-radius:5px;background:linear-gradient(90deg,#31506c,#6c9c67 70%,#c98b4e 88%,#a94e56)}
+.lg-power-shot__meter>i{position:absolute;top:0;bottom:0;background:#5ff2b84a;border-left:1px solid #aaffd8;border-right:1px solid #aaffd8;z-index:2}.lg-power-shot__meter>b{position:absolute;inset:0;background:linear-gradient(90deg,#5bd4ff,#6ef0b0,#ffe179);transform-origin:left;opacity:.9}.lg-power-shot__meter>em{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;box-shadow:0 0 12px #fff;z-index:3}
+.lg-power-shot__labels{display:flex;justify-content:space-between;margin-top:7px;font-size:8px;letter-spacing:1px;color:#9dbdca}.lg-power-shot__labels b{color:#7bf0bf}
+.lg-power-shot__button{position:absolute;left:19%;right:19%;bottom:24px;height:54px;border:1px solid #8fe7ff;background:linear-gradient(#174f68,#0c3047);border-radius:28px;color:#fff;font-weight:900;letter-spacing:2px;box-shadow:0 5px 0 #051726,0 0 22px #32b9e533;touch-action:none}
+.lg-power-shot__button.is-holding{background:linear-gradient(#d45f53,#8e3036);border-color:#ffc0a9;box-shadow:0 3px 0 #42171c,0 0 34px #ff6e5755;transform:translateY(2px)}
+@media(max-width:520px){.lg-tactic-grid__legend{grid-template-columns:auto auto}.lg-tactic-grid__legend strong{grid-column:1/-1;text-align:center}.lg-power-shot__panel{top:49%}}

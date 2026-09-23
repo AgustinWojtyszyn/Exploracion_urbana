@@ -1,10 +1,15 @@
-import { verifiedLeagueSeeds } from '../data/verifiedLeagues'
+import { verifiedLeagueSeeds, type LeagueSeed } from '../data/verifiedLeagues'
 export type Position = '9' | '10' | '7' | '5' | '2' | '1'
 export type PlayerMode = 'classic' | 'daily'
+export type FinalStyle = 'cabulero' | 'mixto' | 'habilidoso'
 export type GameMode = 'player' | 'coach'
 export type Theme = 'dark' | 'light'
-export type Tab = 'career' | 'market' | 'training' | 'history' | 'minigames' | 'ranking' | 'squad'
-export type MiniGameId = 'penalties' | 'freekicks' | 'passing' | 'keeper' | 'duel' | 'scouting'
+export type Tab = 'career' | 'market' | 'training' | 'history' | 'minigames' | 'ranking' | 'squad' | 'shop'
+export type MiniGameId = 'penalties' | 'freekicks' | 'dribble' | 'keeper' | 'duel' | 'memory-board' | 'personal-run' | 'timing-run' | 'ball-track' | 'code-call' | 'hold-up' | 'through-pass' | 'grid-gap' | 'long-kick' | 'pressure-exit' | 'tactic-grid' | 'power-shot' | 'tactics' | 'scouting' | 'locker' | 'lineup' | 'negotiation'
+export type CabalaGameId = 'higher-lower' | 'dice-seven' | 'coin-run' | 'lucky-number' | 'lucky-shirt' | 'three-cups' | 'wheel' | 'tower' | 'grid-reveal' | 'boots'
+export type CareerOutcomeKind = 'title' | 'survival' | 'promotion'
+export type PlayerStatKey = 'pace' | 'finishing' | 'passing' | 'dribbling' | 'defending' | 'physical' | 'reflexes'
+export type PlayerStats = Record<PlayerStatKey, number>
 
 export type League = { id:string; name:string; country:string; tier:number; color:string }
 export type Club = {
@@ -14,12 +19,14 @@ export type Club = {
 
 export type SeasonRecord = {
   season:number; age:number; clubId:string; matches:number; goals:number; assists:number;
-  titles:number; rating:number; score:number; note:string
+  titles:number; rating:number; score:number; note:string; glory?:number;
+  competition?:string; outcomeKind?:CareerOutcomeKind; outcomeWon?:boolean; overallBefore?:number; overallAfter?:number
 }
 
 export type Effects = Partial<Record<
   'overall'|'form'|'energy'|'reputation'|'fans'|'coachTrust'|'money'|
-  'discipline'|'leadership'|'morale'|'injuryRisk',
+  'discipline'|'leadership'|'morale'|'injuryRisk'|
+  'pace'|'finishing'|'passing'|'dribbling'|'defending'|'physical'|'reflexes',
   number
 >>
 
@@ -47,11 +54,15 @@ export type CareerState = {
   season:number
   maxSeasons:number
   clubId:string
+  divisionTier?:number
   overall:number
+  stats?:PlayerStats
   form:number
   energy:number
   reputation:number
   fans:number
+  clubLegacy?:number
+  retirementAge?:number
   coachTrust:number
   discipline:number
   leadership:number
@@ -65,9 +76,23 @@ export type CareerState = {
   caps:number
   nationalGoals:number
   trainingCredits:number
+  purchases?:string[]
+  seenEvents?:string[]
+  lastStorySeason?:number
   history:SeasonRecord[]
   achievements:string[]
   offers:string[]
+  transferOffers?:TransferOffer[]
+  marketDecisionRequired?:boolean
+  currentSalary?:number
+  contractYearsLeft?:number
+  contractYearsTotal?:number
+  finalStyle?:FinalStyle|null
+  pendingFinal?:FinalChallenge|null
+  retirementPending?:boolean
+  trophies?:TrophyRecord[]
+  glory?:number
+  lastSeasonGlory?:number
   activeEvent:CareerEvent|null
   retired:boolean
   finalScore?:number
@@ -110,6 +135,29 @@ export type RunScore = {
 }
 
 export type MiniGame = { id:MiniGameId; name:string; description:string; icon:string; playerOnly?:boolean; coachOnly?:boolean }
+export type FinalChallenge = {
+  id:string
+  kind:CareerOutcomeKind
+  competition:string
+  opponentClubId:string
+  miniGame:MiniGameId
+  cabalaGame:CabalaGameId
+  seasonRecordIndex:number
+}
+export type TrophyRecord = {
+  id:string
+  name:string
+  icon:string
+  season:number
+  clubId:string
+}
+export type TransferOffer = {
+  clubId:string
+  salary:number
+  years:number
+  role:'ROTACIÓN'|'TITULAR'|'FIGURA'|'PROYECTO'
+  signingBonus:number
+}
 
 const slug=(value:string)=>value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')
 const initials=(name:string)=>name.split(/\s+/).filter(Boolean).slice(0,3).map(x=>x[0]).join('').toUpperCase()
@@ -145,6 +193,55 @@ export const clubs:Club[] = verifiedLeagueSeeds.flatMap(seed=>seed.teams.map((na
   }
 }))
 
+export const registerLeagueSeed=(seed:LeagueSeed)=>{
+  if(!leagues.some(league=>league.id===seed.id)){
+    leagues.push({
+      id:seed.id,
+      name:`Liga ${seed.country} · ${seed.division}ª División`,
+      country:seed.country,
+      tier:seed.division,
+      color:seedColor(seed.id).primary,
+    })
+  }
+  const basePrestige=Math.max(42,92-seed.division*8)
+  seed.teams.forEach((name,index)=>{
+    const id=`${seed.id}-${slug(name)}`
+    if(clubs.some(club=>club.id===id))return
+    const colors=seedColor(name)
+    clubs.push({
+      id,
+      leagueId:seed.id,
+      name,
+      short:initials(name).slice(0,3),
+      country:seed.country,
+      prestige:Math.max(40,Math.min(94,basePrestige-(index%9))),
+      salary:Math.round((18000+(basePrestige*1600))*(1-(seed.division-1)*.28)),
+      minOverall:Math.max(55,Math.min(88,56+Math.round(basePrestige*.32)-(seed.division-1)*4)),
+      primary:colors.primary,
+      secondary:colors.secondary,
+    })
+  })
+}
+
+export const statLabels:Record<PlayerStatKey,string> = {
+  pace:'Velocidad',
+  finishing:'Definición',
+  passing:'Pase',
+  dribbling:'Regate',
+  defending:'Defensa',
+  physical:'Físico',
+  reflexes:'Reflejos',
+}
+
+export const baseStatsByPosition:Record<Position,PlayerStats> = {
+  '9':{pace:63,finishing:65,passing:54,dribbling:59,defending:34,physical:61,reflexes:22},
+  '10':{pace:58,finishing:56,passing:66,dribbling:65,defending:42,physical:52,reflexes:22},
+  '7':{pace:66,finishing:56,passing:56,dribbling:65,defending:36,physical:54,reflexes:22},
+  '5':{pace:56,finishing:46,passing:66,dribbling:56,defending:64,physical:62,reflexes:22},
+  '2':{pace:53,finishing:31,passing:51,dribbling:41,defending:67,physical:68,reflexes:22},
+  '1':{pace:41,finishing:20,passing:51,dribbling:31,defending:43,physical:59,reflexes:70},
+}
+
 export const positions:Array<{id:Position;title:string;subtitle:string;boost:number}> = [
   {id:'9',title:'9 · DELANTERO',subtitle:'Goles, presencia y sangre fría.',boost:2},
   {id:'10',title:'10 · ENGANCHE',subtitle:'Visión, técnica y último pase.',boost:1},
@@ -155,12 +252,28 @@ export const positions:Array<{id:Position;title:string;subtitle:string;boost:num
 ]
 
 export const miniGames:MiniGame[] = [
-  {id:'penalties',name:'Penales',description:'Clavá el timing y elegí esquina.',icon:'◎'},
-  {id:'freekicks',name:'Tiros libres',description:'Potencia y precisión en una sola ventana.',icon:'↗'},
-  {id:'passing',name:'Pase imposible',description:'Encontrá la línea antes de que cierre.',icon:'⇢'},
-  {id:'keeper',name:'Reflejos',description:'Leé el disparo y reaccioná rápido.',icon:'◇'},
-  {id:'duel',name:'Duelo defensivo',description:'Ideal para el 2: timing, riesgo y tarjeta.',icon:'◆'},
-  {id:'scouting',name:'Ojo de scout',description:'Detectá valor antes que el mercado.',icon:'◉'},
+  {id:'penalties',name:'El penal',description:'Arrastrá el remate, elegí potencia y buscá el hueco lejos del arquero.',icon:'⚽',playerOnly:true},
+  {id:'freekicks',name:'Trazo',description:'Diseñá la trayectoria con el dedo y soltá en el hueco.',icon:'↗',playerOnly:true},
+  {id:'dribble',name:'Ruptura',description:'Leé el cierre y rompé hacia el espacio con un swipe.',icon:'⇄',playerOnly:true},
+  {id:'keeper',name:'A quemarropa',description:'Esperá el remate y reaccioná tocando la zona exacta del arco.',icon:'🧤',playerOnly:true},
+  {id:'duel',name:'El cruce',description:'Timing puro: entrá cuando la pelota queda expuesta.',icon:'◆',playerOnly:true},
+  {id:'memory-board',name:'Código del DT',description:'Memorizá las posiciones y repetí secuencias de longitud creciente.',icon:'🧩',playerOnly:true},
+  {id:'personal-run',name:'Ruptura',description:'Leé qué costado cierra el rival y hacé un swipe rápido hacia el espacio libre.',icon:'💨',playerOnly:true},
+  {id:'timing-run',name:'Zona perfecta',description:'Frená la línea móvil dentro de la zona verde y buscá el centro exacto.',icon:'🟢',playerOnly:true},
+  {id:'ball-track',name:'Pulso',description:'Tocá cinco objetivos y encadená reacciones rápidas.',icon:'🎯',playerOnly:true},
+  {id:'code-call',name:'Señal 10',description:'Memorizá una ruta y reproducila bajo presión.',icon:'⌘',playerOnly:true},
+  {id:'hold-up',name:'Choque',description:'Cubrí, girá y escapá con un solo gesto.',icon:'⬢',playerOnly:true},
+  {id:'through-pass',name:'Pase filtrado',description:'La defensa se desplaza: tocá el hueco móvil en el instante exacto.',icon:'🧠',playerOnly:true},
+  {id:'grid-gap',name:'Mapa ciego',description:'Recordá por dónde nació la jugada y repetila.',icon:'▧',playerOnly:true},
+  {id:'long-kick',name:'Cambio de frente',description:'Encontrá el espacio lejano con una sola decisión.',icon:'↑',playerOnly:true},
+  {id:'pressure-exit',name:'Salida limpia',description:'La presión se mueve. Encontrá dónde respirar.',icon:'✦',playerOnly:true},
+  {id:'tactic-grid',name:'Pizarra 3×3',description:'Leé líneas, bloqueá al rival y encontrá la jugada decisiva.',icon:'▦',playerOnly:true},
+  {id:'power-shot',name:'El fierrazo',description:'Cargá la pierna y soltá justo dentro de la zona de potencia ideal.',icon:'⚡',playerOnly:true},
+  {id:'tactics',name:'Pizarra táctica',description:'Respondé al planteo rival con la mejor variante.',icon:'⌁',coachOnly:true},
+  {id:'scouting',name:'Ojo de scout',description:'Detectá potencial real detrás de datos incompletos.',icon:'◉',coachOnly:true},
+  {id:'locker',name:'Vestuario',description:'Elegí el mensaje correcto en situaciones calientes.',icon:'☰',coachOnly:true},
+  {id:'lineup',name:'Once ideal',description:'Elegí estructura y roles para neutralizar al rival.',icon:'▦',coachOnly:true},
+  {id:'negotiation',name:'Negociación',description:'Leé el mercado y cerrá acuerdos sin romper la caja.',icon:'↔',coachOnly:true},
 ]
 
 export const playerEvents:CareerEvent[] = [
@@ -207,10 +320,37 @@ export const playerEvents:CareerEvent[] = [
     {id:'study',label:'Esperar hasta el final',description:'Confianza en la lectura.',effects:{form:7,reputation:5,energy:-2}},
     {id:'guess',label:'Jugarte antes',description:'Todo o nada.',effects:{fans:6,form:-2}},
   ]},
-  {id:'selection',category:'football',eyebrow:'SELECCIÓN',title:'Te llaman para una gira internacional',body:'Llegás con poco descanso y tu club juega una final apenas volvés.',minSeason:3,options:[
-    {id:'go',label:'Ir igual',description:'La camiseta nacional pesa.',effects:{reputation:10,energy:-12,fans:6}},
-    {id:'club',label:'Priorizar al club',description:'El DT te lo agradece.',effects:{coachTrust:8,reputation:-3,energy:6}},
+  {id:'spec-9',category:'football',eyebrow:'EVOLUCIÓN',title:'Tu juego pide una especialización',body:'Ya no alcanza con ser prometedor. El cuerpo técnico quiere que elijas qué clase de 9 vas a ser.',positions:['9'],minSeason:3,options:[
+    {id:'killer',label:'KILLER',description:'Menos elaboración. Más gol.',effects:{finishing:6,physical:2,passing:-2}},
+    {id:'mobile9',label:'NUEVE MÓVIL',description:'Salís del área y conectás el ataque.',effects:{passing:5,dribbling:4,finishing:2}},
+    {id:'power9',label:'POTENCIA',description:'Atacás espacio y choque.',effects:{pace:4,physical:5,finishing:2}},
   ]},
+  {id:'spec-2',category:'football',eyebrow:'EVOLUCIÓN',title:'Elegí qué defensor querés ser',body:'El entrenador te ofrece tres caminos muy distintos para convertirte en patrón del fondo.',positions:['2'],minSeason:3,options:[
+    {id:'stopper',label:'STOPPER',description:'Agresivo, frontal y fuerte en el duelo.',effects:{defending:6,physical:5,discipline:-2}},
+    {id:'libero',label:'LÍBERO',description:'Anticipo y salida limpia.',effects:{passing:6,defending:4,pace:2}},
+    {id:'captain2',label:'CAUDILLO',description:'Ordenás la línea y mandás en el área.',effects:{defending:4,leadership:8,physical:3}},
+  ]},
+  {id:'spec-10',category:'football',eyebrow:'EVOLUCIÓN',title:'Tu talento necesita una firma',body:'Podés convertirte en director, gambeteador o un 10 con llegada constante.',positions:['10'],minSeason:3,options:[
+    {id:'director',label:'DIRECTOR',description:'Todo pasa por tu pase.',effects:{passing:7,dribbling:3,pace:-1}},
+    {id:'magician',label:'GAMBETEADOR',description:'Recibís y rompés líneas solo.',effects:{dribbling:7,pace:3,physical:-1}},
+    {id:'scorer10',label:'LLEGADOR',description:'Pisás el área como delantero.',effects:{finishing:6,passing:3,physical:2}},
+  ]},
+  {id:'spec-7',category:'football',eyebrow:'EVOLUCIÓN',title:'¿Cómo querés desequilibrar?',body:'La banda ya te queda chica. Elegí cómo hacer daño.',positions:['7'],minSeason:3,options:[
+    {id:'winger',label:'EXTREMO PURO',description:'Velocidad y uno contra uno.',effects:{pace:6,dribbling:6,defending:-2}},
+    {id:'inside7',label:'A PIERNA CAMBIADA',description:'Entrás hacia el arco para definir.',effects:{finishing:6,dribbling:4,passing:2}},
+    {id:'worker7',label:'IDA Y VUELTA',description:'Más recorrido y sacrificio.',effects:{physical:5,defending:4,pace:3}},
+  ]},
+  {id:'spec-5',category:'football',eyebrow:'EVOLUCIÓN',title:'El mediocampo puede ser tuyo',body:'Definí el rol que vas a ocupar cuando el partido se ensucia.',positions:['5'],minSeason:3,options:[
+    {id:'anchor5',label:'PIVOTE',description:'Cortás todo y sostenés al equipo.',effects:{defending:6,physical:5,pace:-1}},
+    {id:'organizer5',label:'ORGANIZADOR',description:'Primer pase, pausa y lectura.',effects:{passing:7,dribbling:3,physical:-1}},
+    {id:'mixed5',label:'MIXTO',description:'Presencia en las dos áreas.',effects:{pace:3,passing:4,physical:4,finishing:2}},
+  ]},
+  {id:'spec-1',category:'football',eyebrow:'EVOLUCIÓN',title:'Definí tu estilo bajo los tres palos',body:'A esta altura ya todos conocen tus virtudes. Elegí cuál llevar al máximo.',positions:['1'],minSeason:3,options:[
+    {id:'shotstopper',label:'ATAJADOR',description:'Puro reflejo y reacción.',effects:{reflexes:7,physical:2}},
+    {id:'sweeper1',label:'ARQUERO JUGADOR',description:'Salís del área y empezás ataques.',effects:{passing:6,pace:3,reflexes:2}},
+    {id:'commander1',label:'COMANDANTE',description:'Dominás el área y ordenás la defensa.',effects:{reflexes:3,physical:4,leadership:8}},
+  ]},
+
 ]
 
 export const coachEvents:CoachEvent[] = [

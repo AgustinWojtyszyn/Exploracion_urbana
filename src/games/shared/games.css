@@ -1,0 +1,668 @@
+/* Scene primitives. Deliberately scoped: career themes cannot wash out the pitch. */
+.lg-scene {
+  --lg-ink:#eef8ff;
+  --lg-muted:#aac1d4;
+  --lg-cyan:#54e2ff;
+  --lg-gold:#efca76;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  color:var(--lg-ink);
+  background:#061729;
+  border:1px solid #25425c;
+  border-radius:20px;
+  max-width:720px;
+  width:100%;
+  margin-inline:auto;
+  box-shadow:0 24px 70px #0006;
+  animation:lg-scene-in .45s ease both
+}
+.lg-scene button {
+  font:inherit;
+  color:inherit;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent
+}
+.lg-scene button:focus-visible,.lg-scene [tabindex]:focus-visible {
+  outline:3px solid #ffdf86;
+  outline-offset:4px;
+  box-shadow:none
+}
+.lg-scene button:disabled {
+  opacity:.5
+}
+.lg-scene__header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:16px 18px;
+  position:relative;
+  z-index:4;
+  background:#051323e8;
+  border-bottom:1px solid #7dcaff26
+}
+.lg-scene__header span {
+  font-size:9px;
+  letter-spacing:1.8px;
+  color:var(--lg-cyan);
+  font-weight:800
+}
+.lg-scene__header h2 {
+  font:700 clamp(24px,6vw,34px)/1 var(--font-display);
+  margin:6px 0 0;
+  letter-spacing:.3px;
+  color:#fff
+}
+.lg-controls {
+  display:flex;
+  gap:4px
+}
+.lg-controls button {
+  width:36px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid #80bbdf30;
+  background:#19314a8c;
+  border-radius:8px;
+  font-size:20px
+}
+.lg-controls button[aria-pressed=true] {
+  color:var(--lg-cyan);
+  border-color:var(--lg-cyan)
+}
+.lg-scene__body {
+  position:relative;
+  min-height:440px
+}
+.lg-game-mount {
+  position:relative
+}
+.lg-scene__footer {
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 18px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  background:#041221;
+  border-top:1px solid #80bbdf30;
+  color:#abc8de
+}
+.lg-scene__footer span:first-child {
+  color:#fff;
+  font-style:italic
+}
+.lg-stadium {
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:-1;
+  background:radial-gradient(ellipse at 50% 0,#1c5d86 0,transparent 60%),linear-gradient(#071729,#07101c)
+}
+.lg-stadium__roof {
+  position:absolute;
+  inset:-15% -10% auto;
+  height:48%;
+  border:12px solid #183245;
+  border-radius:50%;
+  box-shadow:0 6px 0 #6faccc55,0 13px 0 #112c40,0 18px 0 #59809744
+}
+.lg-stadium__crowd {
+  position:absolute;
+  inset:17% -4% 28%;
+  border-radius:50%;
+  background:radial-gradient(circle,#a2d1e6 1px,transparent 2px) 0 0/11px 12px,radial-gradient(circle,#4f85ac 1.5px,transparent 2px) 6px 6px/13px 13px;
+  opacity:.35;
+  transform:perspective(400px) rotateX(35deg)
+}
+.lg-floodlight {
+  position:absolute;
+  top:9%;
+  height:7px;
+  width:26%;
+  background:#edfcff;
+  box-shadow:0 0 24px 7px #9eeaff88;
+  transform:rotate(-18deg)
+}
+.lg-floodlight--left {
+  left:4%
+}
+.lg-floodlight--right {
+  right:4%;
+  transform:rotate(18deg)
+}
+.lg-stadium__haze {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,transparent 15%,#9ddfff0a 26%,transparent 38%,#9ddfff12 68%,transparent 82%)
+}
+.lg-playfield {
+  height:440px;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  background:radial-gradient(ellipse at 50% 0,#2b7e8959,transparent 70%),repeating-linear-gradient(0deg,#0c4d42a8 0 11%,#0b423ba8 11% 22%)
+}
+.lg-pitch-lines {
+  position:absolute;
+  inset:8% 0 0;
+  width:100%;
+  height:92%;
+  pointer-events:none;
+  fill:none;
+  stroke:#c1fff436;
+  stroke-width:.35
+}
+.lg-hud {
+  position:absolute;
+  inset:0 0 auto;
+  z-index:8;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:linear-gradient(#071a2eed,#071a2eaa);
+  height:49px;
+  padding:8px 17px;
+  font-size:10px;
+  letter-spacing:1px;
+  pointer-events:none
+}
+.lg-hud>b {
+  font:700 24px var(--font-display);
+  margin-left:auto
+}
+.lg-hud small {
+  font-size:14px;
+  color:#91afc9
+}
+.lg-hud em {
+  color:#70f3cf;
+  font-size:9px;
+  font-style:normal
+}
+.lg-hud__meter {
+  position:absolute;
+  inset:auto 0 0;
+  height:3px;
+  background:#132d3d
+}
+.lg-hud__meter i {
+  display:block;
+  height:100%;
+  background:#58e3fa;
+  transform-origin:left;
+  box-shadow:0 0 8px #58e3fa
+}
+.lg-field-caption {
+  position:absolute;
+  bottom:14px;
+  left:8px;
+  right:8px;
+  text-align:center;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  color:#dbf4ff;
+  pointer-events:none;
+  text-shadow:0 2px 4px #000
+}
+.lg-center-call {
+  position:absolute;
+  top:46%;
+  left:0;
+  right:0;
+  text-align:center;
+  letter-spacing:5px;
+  font:700 28px var(--font-display);
+  animation:lg-breathe .7s ease infinite alternate
+}
+.lg-count-in,.lg-pause,.lg-result {
+  min-height:440px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:28px;
+  gap:17px;
+  position:relative;
+  overflow:hidden
+}
+.lg-count-in__number {
+  font:700 116px/.85 var(--font-display);
+  color:#65dfff22;
+  letter-spacing:-6px
+}
+.lg-count-in>span:not(:first-child),.lg-pause>span {
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--lg-cyan)
+}
+.lg-count-in h3,.lg-pause h3 {
+  font:700 31px/1.1 var(--font-display);
+  max-width:330px;
+  margin:0
+}
+.lg-count-in small {
+  font-size:11px;
+  color:#a9c5d8
+}
+.lg-scene .lg-action {
+  border:0;
+  border-radius:7px;
+  padding:15px 22px;
+  background:linear-gradient(120deg,#62e3ff,#3c9dfc);
+  color:#062238;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.8px;
+  box-shadow:0 7px 25px #008aff24;
+  min-height:48px
+}
+.lg-action:active {
+  transform:scale(.97)
+}
+.lg-pause,.lg-result {
+  position:absolute;
+  inset:0;
+  z-index:25;
+  background:#051325f5;
+  backdrop-filter:blur(9px)
+}
+.lg-result {
+  animation:lg-result-in .45s ease both;
+  gap:6px
+}
+.lg-result>span {
+  color:#74efd0;
+  font:700 38px var(--font-display);
+  letter-spacing:2px
+}
+.lg-result>strong {
+  font:700 136px/.95 var(--font-display);
+  color:#fff;
+  text-shadow:0 0 50px #66deff4d
+}
+.lg-result p {
+  margin:6px 0;
+  font-weight:800;
+  font-size:14px
+}
+.lg-result small {
+  letter-spacing:3px;
+  font-size:9px;
+  color:#a6c5dc
+}
+.lg-result>div:last-child {
+  display:flex;
+  gap:10px;
+  margin-top:24px
+}
+.lg-result>div>button:not(.lg-action) {
+  border:1px solid #adc9e344;
+  background:transparent;
+  border-radius:7px;
+  padding:10px 14px
+}
+.lg-result.is-miss>span {
+  color:#ff939c
+}
+.lg-feedback {
+  pointer-events:none;
+  position:absolute;
+  inset:0;
+  z-index:16;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  background:radial-gradient(ellipse,#031421e6 5%,#07152377 45%,transparent 75%);
+  animation:lg-feedback-in .22s ease both;
+  animation-delay:.55s;
+  opacity:0
+}
+.lg-feedback strong {
+  font:700 clamp(26px,7vw,42px) var(--font-display);
+  color:#7dffd0;
+  text-shadow:0 2px 15px #071523
+}
+.lg-feedback b {
+  font:700 55px/1 var(--font-display);
+  color:#fff
+}
+.lg-feedback small {
+  font-size:10px;
+  color:#d3e5f3
+}
+.lg-feedback.is-miss strong {
+  color:#ff8b96
+}
+.lg-reaction .lg-feedback,.lg-timing .lg-feedback {
+  animation-delay:0s
+}
+.lg-particles {
+  position:absolute;
+  left:50%;
+  top:50%;
+  pointer-events:none
+}
+.lg-particles i {
+  position:absolute;
+  width:5px;
+  height:9px;
+  background:#6af6d3;
+  animation:lg-particle .9s ease-out both
+}
+.lg-particles--gold i {
+  background:#f7d37e
+}
+.lg-actor {
+  position:absolute;
+  width:56px;
+  height:90px;
+  transform:translate(-50%,-75%);
+  pointer-events:none;
+  z-index:3
+}
+.lg-player {
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 6px 5px #00131f66)
+}
+.lg-player__shirt {
+  fill:#27b9ea;
+  stroke:#c5f7ff;
+  stroke-width:1
+}
+.lg-player--opponent .lg-player__shirt {
+  fill:#ee667a;
+  stroke:#ffd9dc
+}
+.lg-player--keeper .lg-player__shirt {
+  fill:#ffca68;
+  stroke:#fff5c9
+}
+.lg-player--running .lg-player__body {
+  animation:lg-run .25s ease-in-out infinite alternate;
+  transform-origin:35px 90px
+}
+.lg-player--shooting .lg-player__legs {
+  transform:rotate(-25deg);
+  transform-origin:35px 67px
+}
+.lg-player--diving .lg-player__arms {
+  transform:rotate(-25deg);
+  transform-origin:35px 40px
+}
+.lg-ball {
+  width:24px;
+  height:24px;
+  z-index:5;
+  transform:translate(-50%,-50%)
+}
+.lg-ball-art {
+  width:100%;
+  height:100%;
+  filter:drop-shadow(0 3px 3px #001c2a77)
+}
+.lg-ball--ready {
+  width:33px;
+  height:33px;
+  filter:drop-shadow(0 0 12px #abffffaa)
+}
+.lg-flying-ball {
+  position:absolute;
+  width:27px;
+  height:27px;
+  left:var(--from-x);
+  top:var(--from-y);
+  z-index:7;
+  transform:translate(-50%,-50%);
+  animation:lg-flight var(--flight-time) cubic-bezier(.2,.55,.5,1) forwards;
+  pointer-events:none
+}
+.lg-flight-line {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:#d3fcff66;
+  stroke-width:.4;
+  stroke-dasharray:2 2;
+  pointer-events:none;
+  z-index:2
+}
+.lg-flight-line path {
+  vector-effect:non-scaling-stroke;
+  stroke-width:2
+}
+.lg-aim-line {
+  stroke:#77f6d6aa
+}
+.lg-goal {
+  position:absolute;
+  left:12%;
+  top:16%;
+  width:76%;
+  height:32%;
+  border:5px solid #f0f9fc;
+  border-bottom:1px solid #d7f6ff99;
+  box-shadow:0 -3px 0 #a9c8cf,4px 8px 8px #001c294d;
+  z-index:2;
+  pointer-events:none;
+  border-radius:3px
+}
+.lg-goal>div {
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(90deg,transparent 0 13px,#e9ffff38 13px 14px),repeating-linear-gradient(0deg,#051f3338 0 13px,#e9ffff38 13px 14px)
+}
+.lg-goal>i {
+  position:absolute;
+  inset:0 6%;
+  border:1px solid #e9ffff36;
+  transform:perspective(200px) rotateX(25deg)
+}
+.lg-keeper {
+  width:64px;
+  height:97px;
+  transition:left .34s ease,top .3s ease,rotate .35s ease;
+  transform-origin:50% 50%
+}
+.lg-trophy {
+  width:66px;
+  height:82px;
+  filter:drop-shadow(0 4px 14px #d19d382b)
+}
+.lg-keyboard-controls {
+  position:absolute;
+  bottom:36px;
+  left:10px;
+  z-index:12;
+  font-size:10px;
+  color:#c9e6ed;
+  touch-action:auto
+}
+.lg-keyboard-controls[open] {
+  padding:10px;
+  background:#051728f5;
+  border:1px solid #59badb;
+  max-width:230px
+}
+.lg-keyboard-controls label {
+  display:block
+}
+.lg-keyboard-controls input {
+  width:120px;
+  vertical-align:middle
+}
+.lg-keyboard-controls button {
+  background:#19668b;
+  border:0;
+  padding:8px;
+  border-radius:4px
+}
+@keyframes lg-flight {
+  0% {
+    left:var(--from-x);
+    top:var(--from-y);
+    transform:translate(-50%,-50%) scale(1.1) rotate(0)
+  }
+  60% {
+    transform:translate(-50%,-90%) scale(.85) rotate(210deg)
+  }
+  100% {
+    left:var(--to-x);
+    top:var(--to-y);
+    transform:translate(-50%,-50%) scale(.65) rotate(360deg)
+  }
+}
+@keyframes lg-run {
+  from {
+    transform:rotate(-5deg) translateY(0)
+  }
+  to {
+    transform:rotate(5deg) translateY(-3px)
+  }
+}
+@keyframes lg-breathe {
+  to {
+    opacity:.5;
+    transform:scale(.97)
+  }
+}
+@keyframes lg-scene-in {
+  from {
+    opacity:0;
+    transform:translateY(14px)
+  }
+  to {
+    opacity:1;
+    transform:translateY(0)
+  }
+}
+@keyframes lg-result-in {
+  from {
+    opacity:0;
+    transform:scale(1.05)
+  }
+  to {
+    opacity:1;
+    transform:scale(1)
+  }
+}
+@keyframes lg-feedback-in {
+  from {
+    opacity:0;
+    transform:scale(.85)
+  }
+  to {
+    opacity:1;
+    transform:scale(1)
+  }
+}
+@keyframes lg-particle {
+  0% {
+    opacity:1;
+    transform:translate(0,0)
+  }
+  100% {
+    opacity:0;
+    transform:translate(var(--dx),var(--dy)) rotate(var(--spin))
+  }
+}
+@media(max-width:480px) {
+  .lg-scene {
+    border-radius:14px
+  }
+  .lg-scene__header {
+    padding:12px
+  }
+  .lg-scene__header span {
+    letter-spacing:1px;
+    font-size:8px
+  }
+  .lg-controls button {
+    width:31px;
+    height:35px
+  }
+  .lg-playfield,.lg-scene__body {
+    height:clamp(350px,58svh,460px);
+    min-height:350px
+  }
+  .lg-count-in,.lg-result,.lg-pause {
+    min-height:350px;
+    height:100%
+  }
+  .lg-count-in {
+    height:clamp(350px,58svh,460px)
+  }
+  .lg-actor {
+    width:48px;
+    height:77px
+  }
+  .lg-ball {
+    width:24px;
+    height:24px
+  }
+  .lg-ball--ready {
+    width:32px;
+    height:32px
+  }
+  .lg-keeper {
+    width:57px;
+    height:86px
+  }
+  .lg-field-caption {
+    font-size:9px
+  }
+  .lg-scene__footer {
+    font-size:8px;
+    padding:10px
+  }
+  .lg-count-in__number {
+    font-size:90px
+  }
+  .lg-result>strong {
+    font-size:110px
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .lg-scene,.lg-scene * {
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important
+  }
+  .lg-scene * {
+    transition-duration:.01ms!important
+  }
+  .lg-flying-ball {
+    animation-duration:.35s!important
+  }
+  .lg-cup {
+    transition-duration:.5s!important
+  }
+  .lg-particles {
+    display:none
+  }
+  .lg-scene .lg-coin {
+    transition-duration:.4s!important
+  }
+  .lg-scene .lg-wheel {
+    transition-duration:.6s!important
+  }
+}
+.lg-scene.is-paused .lg-game-mount * {
+  animation-play-state:paused!important
+}

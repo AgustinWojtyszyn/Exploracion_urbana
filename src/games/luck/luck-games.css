@@ -1,0 +1,325 @@
+.lg-scene--luck .lg-playfield {
+  background:radial-gradient(ellipse at 50% 25%,#163f63a6,transparent 70%),linear-gradient(#091a2bac,#051321db)
+}
+.lg-scene--luck .lg-hud__meter i {
+  background:#f1ca72
+}
+.lg-luck-controls {
+  position:absolute;
+  left:9%;
+  right:9%;
+  bottom:26px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px
+}
+.lg-luck-controls small {
+  font-size:10px;
+  color:#b6d1df
+}
+.lg-segmented {
+  display:flex;
+  width:100%;
+  gap:8px
+}
+.lg-segmented button {
+  flex:1;
+  min-height:48px;
+  border:1px solid #6c98b74d;
+  background:#102d46;
+  border-radius:8px;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:1px
+}
+.lg-segmented button[aria-pressed=true] {
+  border-color:#f1cd82;
+  color:#ffdf96;
+  background:#443c286b
+}
+.lg-coin-toss {
+  position:absolute;
+  top:23%;
+  left:50%;
+  width:145px;
+  height:145px;
+  transform:translateX(-50%);
+  perspective:800px;
+  z-index:3
+}
+.lg-coin {
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform 1.9s cubic-bezier(.13,.65,.3,1)
+}
+.lg-coin__face {
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  border-radius:50%;
+  border:9px double #f6d888;
+  background:radial-gradient(circle at 35% 30%,#fff3ad,#c99533 65%,#72501d);
+  box-shadow:inset 0 0 0 5px #714f2344,0 5px 0 #9b7129;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  font:700 75px/.9 var(--font-display);
+  color:#71511f;
+  text-shadow:1px 1px #fff2b7
+}
+.lg-coin__face small {
+  font-size:10px;
+  letter-spacing:3px;
+  margin-top:10px
+}
+.lg-coin__back {
+  transform:rotateY(180deg)
+}
+.lg-coin-shadow {
+  position:absolute;
+  top:60%;
+  left:35%;
+  width:30%;
+  height:15px;
+  border-radius:50%;
+  background:#0007;
+  filter:blur(8px)
+}
+.lg-coin-toss.is-tossing {
+  animation:lg-toss 1.9s ease both
+}
+.lg-card-trail {
+  position:absolute;
+  top:64px;
+  left:20px;
+  display:flex;
+  gap:8px
+}
+.lg-card-trail span {
+  padding:4px 9px;
+  border:1px solid #69c4e24d;
+  border-radius:4px;
+  font-size:12px;
+  color:#9edfef
+}
+.lg-playing-cards {
+  position:absolute;
+  top:24%;
+  left:10%;
+  right:10%;
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  perspective:900px
+}
+.lg-playing-card {
+  height:180px;
+  flex:1;
+  max-width:132px;
+  border:2px solid #c1edff;
+  border-radius:13px;
+  background:linear-gradient(145deg,#eefaff,#a2c8e1);
+  color:#073352;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-evenly;
+  box-shadow:0 10px 20px #0005;
+  transform:rotate(-6deg)
+}
+.lg-playing-card strong {
+  font:700 85px/.9 var(--font-display)
+}
+.lg-playing-card small,.lg-playing-card span {
+  font-size:10px;
+  letter-spacing:1px;
+  font-weight:800
+}
+.lg-playing-card--next {
+  transform:rotate(6deg);
+  background:repeating-linear-gradient(45deg,#19374f 0 5px,#1f425e 5px 7px);
+  color:#96c5df;
+  border-color:#719bb9
+}
+.lg-playing-card--next.is-revealed {
+  animation:lg-card-reveal .45s ease both;
+  background:linear-gradient(145deg,#fff5d1,#e4b35f);
+  color:#453110;
+  border-color:#ffe5a3
+}
+.lg-cups-table {
+  position:absolute;
+  left:3%;
+  right:3%;
+  top:37%;
+  height:165px;
+  border-bottom:12px solid #365772;
+  border-radius:50%;
+  background:radial-gradient(ellipse at 50% 90%,#55809a80,transparent 68%);
+  perspective:800px;
+  container-type:inline-size
+}
+.lg-cup {
+  position:absolute;
+  top:16px;
+  left:18%;
+  width:90px;
+  height:110px;
+  transform:translateX(calc(var(--cup-x) - 50%));
+  transition:transform .58s cubic-bezier(.4,0,.2,1);
+  will-change:transform;
+  z-index:2;
+  background:transparent;
+  border:0;
+  padding:0;
+  filter:drop-shadow(0 9px 5px #0008)
+}
+.lg-cup svg {
+  width:100%;
+  height:100%
+}
+.lg-scene .lg-cup:disabled {
+  opacity:1;
+  cursor:default
+}
+.lg-cup.is-lifted {
+  transform:translate(calc(var(--cup-x) - 50%),-69px) rotate(-8deg)
+}
+.lg-cup-ball {
+  position:absolute;
+  top:91px;
+  left:18%;
+  width:27px;
+  height:27px;
+  transform:translateX(calc(var(--cup-x) - 50%));
+  transition:transform .58s cubic-bezier(.4,0,.2,1),opacity .25s;
+  z-index:1
+}
+.lg-interactive-stadium {
+  position:absolute;
+  top:18%;
+  left:2%;
+  width:96%;
+  height:70%;
+  transition:transform 1s ease;
+  filter:drop-shadow(0 16px 18px #0007)
+}
+.lg-interactive-stadium.is-zoomed {
+  transform:scale(1.12)
+}
+.lg-stand-sector {
+  cursor:pointer;
+  outline:none;
+  transition:filter .2s
+}
+.lg-stand-sector:hover,.lg-stand-sector:focus-visible {
+  filter:brightness(1.7);
+  stroke:#fff;
+  stroke-width:3
+}
+.lg-stand-sector.is-selected {
+  filter:drop-shadow(0 0 10px #efcc72)
+}
+.lg-stand-flag {
+  animation:lg-flag 1.2s ease-in-out infinite alternate;
+  transform-box:fill-box;
+  transform-origin:bottom left
+}
+.lg-wheel-wrap {
+  position:absolute;
+  top:17%;
+  left:50%;
+  width:min(66%,280px);
+  aspect-ratio:1;
+  transform:translateX(-50%);
+  filter:drop-shadow(0 9px 20px #0008)
+}
+.lg-wheel {
+  width:100%;
+  height:100%;
+  transition:transform 3.9s cubic-bezier(.12,.7,.18,1);
+  border-radius:50%;
+  border:7px solid #e5c580;
+  box-shadow:0 0 0 6px #14384e
+}
+.lg-wheel-pointer {
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  color:#fff2bc;
+  font-size:29px;
+  text-shadow:0 2px 4px #000
+}
+.lg-wheel-game .lg-luck-controls {
+  bottom:20px
+}
+@keyframes lg-toss {
+  0%,100% {
+    translate:0 0;
+    scale:1
+  }
+  40% {
+    translate:0 -40px;
+    scale:1.25
+  }
+  82% {
+    translate:0 8px;
+    scale:.98
+  }
+  92% {
+    translate:0 -7px;
+    scale:1.04
+  }
+}
+@keyframes lg-card-reveal {
+  from {
+    transform:rotateY(85deg) rotate(6deg);
+    opacity:.4
+  }
+  to {
+    transform:rotateY(0) rotate(6deg);
+    opacity:1
+  }
+}
+@keyframes lg-flag {
+  to {
+    transform:skewY(7deg) scaleX(.92)
+  }
+}
+@media(max-width:480px) {
+  .lg-coin-toss {
+    width:125px;
+    height:125px;
+    top:22%
+  }
+  .lg-coin__face {
+    font-size:65px
+  }
+  .lg-playing-card {
+    height:150px
+  }
+  .lg-playing-card strong {
+    font-size:70px
+  }
+  .lg-cup {
+    width:80px
+  }
+  .lg-wheel-wrap {
+    width:min(64%,240px);
+    top:18%
+  }
+  .lg-luck-controls {
+    bottom:23px;
+    gap:10px
+  }
+}
+.lg-stand-sector.is-winner {
+  stroke:#fdedb6;
+  stroke-width:4;
+  filter:brightness(1.8) drop-shadow(0 0 8px #ffd36e)
+}
